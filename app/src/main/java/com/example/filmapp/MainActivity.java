@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("Sui","test");
         // hej
-        // HAI
+
+      //david
     }
 }
