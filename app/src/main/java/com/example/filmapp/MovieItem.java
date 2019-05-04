@@ -2,13 +2,13 @@ package com.example.filmapp;
 
 public class MovieItem {
     String title;
-    String imageUrl;
+    String posterImageUrl;
     String releaseDate;
     String description;
 
     public MovieItem(String title, String imageUrl, String releaseDate, String description) {
         this.title = title;
-        this.imageUrl = imageUrl;
+        this.posterImageUrl = imageUrl;
         this.releaseDate = releaseDate;
         this.description = description;
     }
@@ -17,8 +17,8 @@ public class MovieItem {
         return title;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getPosterImageUrl() {
+        return posterImageUrl;
     }
 
     public String getReleaseDate() {
