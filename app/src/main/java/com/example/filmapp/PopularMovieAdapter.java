@@ -3,7 +3,6 @@ package com.example.filmapp;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +13,11 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-public class PopularMoiveAdapter extends RecyclerView.Adapter<PopularMoiveAdapter.PopularMovieViewHolder> {
+public class PopularMovieAdapter extends RecyclerView.Adapter<PopularMovieAdapter.PopularMovieViewHolder> {
     private Context context;
     private ArrayList<MovieItem> movieList;
 
-    public PopularMoiveAdapter(Context context, ArrayList<MovieItem> movieList) {
+    public PopularMovieAdapter(Context context, ArrayList<MovieItem> movieList) {
         this.context = context;
         this.movieList = movieList;
     }

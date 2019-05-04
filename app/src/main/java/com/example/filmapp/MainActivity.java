@@ -4,7 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.View;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -16,15 +18,15 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private PopularMoiveAdapter popularMoiveAdapter;
+    private PopularMovieAdapter popularMovieAdapter;
     private ArrayList<MovieItem> movieList;
     private RequestQueue requestQueue;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,16 @@ public class MainActivity extends AppCompatActivity {
 
         requestQueue = Volley.newRequestQueue(this);
         parseJson();
+
+        searchView = findViewById(R.id.search_view);
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Sui search","succeseful");
+
+                // hämta informationer
+            }
+        });
     }
 
     private void parseJson() {
@@ -71,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
 
                             }
 
-                            popularMoiveAdapter = new PopularMoiveAdapter(MainActivity.this, movieList);
-                            recyclerView.setAdapter(popularMoiveAdapter);
+                            popularMovieAdapter = new PopularMovieAdapter(MainActivity.this, movieList);
+                            recyclerView.setAdapter(popularMovieAdapter);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
