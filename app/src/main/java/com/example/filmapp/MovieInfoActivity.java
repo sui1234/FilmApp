@@ -29,6 +29,7 @@ public class MovieInfoActivity extends AppCompatActivity {
     TextView movieReleaseDateTv;
     TextView movieRuntimeTv;
     TextView movieRatingTv;
+    TextView movieGenreTv;
     RecyclerView castRecyclerView;
     RecyclerView crewRecyclerView;
     RequestQueue requestQueue;
@@ -47,6 +48,7 @@ public class MovieInfoActivity extends AppCompatActivity {
         movieReleaseDateTv = findViewById(R.id.release);
         movieRuntimeTv = findViewById(R.id.runtime);
         movieRatingTv = findViewById(R.id.rating);
+        movieGenreTv = findViewById(R.id.genres);
         movieDescriptionTv = findViewById(R.id.description);
         castRecyclerView = findViewById(R.id.castRecyclerView);
         crewRecyclerView = findViewById(R.id.crewRecyclerView);
@@ -69,13 +71,23 @@ public class MovieInfoActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+//                          hämtar genres
+                            JSONArray jsonArray = response.getJSONArray("genres");
+
+                            StringBuilder genres = new StringBuilder();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject result = jsonArray.getJSONObject(i);
+
+                                String genre = result.getString("name");
+                                genres.append(genre + " • ");
+                            }
+
                             String title = response.getString("original_title");
                             String description = response.getString("overview");
                             String poster = response.getString("backdrop_path");
                             String releaseDate = response.getString("release_date");
                             double rating = response.getDouble("vote_average");
                             int runtime = response.getInt("runtime");
-
 
                             String hoursMinutes = Integer.toString(runtime / 60) + "h " + Integer.toString(runtime % 60) + "m";
                             String fullPosterUrl = "https://image.tmdb.org/t/p/original" + poster;
@@ -91,6 +103,8 @@ public class MovieInfoActivity extends AppCompatActivity {
                             movieReleaseDateTv.setText(releaseYear);
                             movieRatingTv.setText(Double.toString(rating));
                             movieRuntimeTv.setText(hoursMinutes);
+                            movieGenreTv.setText(genres.substring(0, genres.length() - 2));
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
