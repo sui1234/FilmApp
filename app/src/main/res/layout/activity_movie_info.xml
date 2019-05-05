@@ -44,7 +44,7 @@
         android:textColor="#000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"/>
+        app:layout_constraintTop_toBottomOf="@+id/release"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/castRecyclerView"
@@ -86,9 +86,53 @@
         android:id="@+id/crewRecyclerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/crew"/>
+
+    <TextView
+        android:id="@+id/release"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="Release date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title"/>
+
+    <TextView
+        android:id="@+id/genres"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="Genres"
+        app:layout_constraintBottom_toBottomOf="@+id/release"
+        app:layout_constraintStart_toEndOf="@+id/release"
+        app:layout_constraintTop_toTopOf="@+id/release"/>
+
+    <TextView
+        android:id="@+id/rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Rating"
+        app:layout_constraintBottom_toBottomOf="@+id/runtime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/runtime"/>
+
+    <TextView
+        android:id="@+id/runtime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Runtime"
+        app:layout_constraintBottom_toBottomOf="@+id/genres"
+        app:layout_constraintEnd_toStartOf="@+id/rating"
+        app:layout_constraintTop_toTopOf="@+id/genres"/>
 
 </android.support.constraint.ConstraintLayout>
 </ScrollView>

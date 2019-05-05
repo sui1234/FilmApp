@@ -24,8 +24,11 @@ import java.util.ArrayList;
 public class MovieInfoActivity extends AppCompatActivity {
 
     ImageView moviePoster;
-    TextView movieTitle;
-    TextView movieDescription;
+    TextView movieTitleTv;
+    TextView movieDescriptionTv;
+    TextView movieReleaseDateTv;
+    TextView movieRuntimeTv;
+    TextView movieRatingTv;
     RecyclerView castRecyclerView;
     RecyclerView crewRecyclerView;
     RequestQueue requestQueue;
@@ -40,8 +43,11 @@ public class MovieInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_info);
 
         moviePoster = findViewById(R.id.poster);
-        movieTitle = findViewById(R.id.title);
-        movieDescription = findViewById(R.id.description);
+        movieTitleTv = findViewById(R.id.title);
+        movieReleaseDateTv = findViewById(R.id.release);
+        movieRuntimeTv = findViewById(R.id.runtime);
+        movieRatingTv = findViewById(R.id.rating);
+        movieDescriptionTv = findViewById(R.id.description);
         castRecyclerView = findViewById(R.id.castRecyclerView);
         crewRecyclerView = findViewById(R.id.crewRecyclerView);
         castList = new ArrayList<>();
@@ -66,15 +72,25 @@ public class MovieInfoActivity extends AppCompatActivity {
                             String title = response.getString("original_title");
                             String description = response.getString("overview");
                             String poster = response.getString("backdrop_path");
+                            String releaseDate = response.getString("release_date");
+                            double rating = response.getDouble("vote_average");
+                            int runtime = response.getInt("runtime");
 
+
+                            String hoursMinutes = Integer.toString(runtime / 60) + "h " + Integer.toString(runtime % 60) + "m";
                             String fullPosterUrl = "https://image.tmdb.org/t/p/original" + poster;
+                            String[] releaseDateArr = releaseDate.split("-");
+                            String releaseYear = releaseDateArr[0];
 
                             Glide.with(MovieInfoActivity.this)
                                     .load(fullPosterUrl)
                                     .centerCrop()
                                     .into(moviePoster);
-                            movieTitle.setText(title);
-                            movieDescription.setText(description);
+                            movieTitleTv.setText(title);
+                            movieDescriptionTv.setText(description);
+                            movieReleaseDateTv.setText(releaseYear);
+                            movieRatingTv.setText(Double.toString(rating));
+                            movieRuntimeTv.setText(hoursMinutes);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -163,11 +179,9 @@ public class MovieInfoActivity extends AppCompatActivity {
                             castAdapter = new CastAdapter(MovieInfoActivity.this, crewList);
                             crewRecyclerView.setAdapter(castAdapter);
 
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 }, new Response.ErrorListener() {
             @Override
