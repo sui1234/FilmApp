@@ -26,10 +26,12 @@ public class MovieInfoActivity extends AppCompatActivity {
     ImageView moviePoster;
     TextView movieTitle;
     TextView movieDescription;
-    RecyclerView recyclerView;
+    RecyclerView castRecyclerView;
+    RecyclerView crewRecyclerView;
     RequestQueue requestQueue;
     CastAdapter castAdapter;
     ArrayList<CreditPerson> castList;
+    ArrayList<CreditPerson> crewList;
 
 
     @Override
@@ -40,14 +42,18 @@ public class MovieInfoActivity extends AppCompatActivity {
         moviePoster = findViewById(R.id.poster);
         movieTitle = findViewById(R.id.title);
         movieDescription = findViewById(R.id.description);
-        recyclerView = findViewById(R.id.castRecyclerView);
+        castRecyclerView = findViewById(R.id.castRecyclerView);
+        crewRecyclerView = findViewById(R.id.crewRecyclerView);
         castList = new ArrayList<>();
+        crewList = new ArrayList<>();
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        castRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        crewRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         requestQueue = Volley.newRequestQueue(this);
         parseMovieInfoJson();
         parseCastJson();
+        parseCrewJson();
     }
 
     private void parseMovieInfoJson() {
@@ -110,7 +116,52 @@ public class MovieInfoActivity extends AppCompatActivity {
                             }
 
                             castAdapter = new CastAdapter(MovieInfoActivity.this, castList);
-                            recyclerView.setAdapter(castAdapter);
+                            castRecyclerView.setAdapter(castAdapter);
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        requestQueue.add(request);
+    }
+
+    private void parseCrewJson() {
+        String url = "https://api.themoviedb.org/3/movie/299534/credits?api_key=7005ceb3ddacaaf788e2327647f0fa57";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("crew");
+
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject result = jsonArray.getJSONObject(i);
+
+                                String name = result.getString("name");
+                                String id = result.getString("id");
+                                String job = result.getString("job");
+                                String profileImage = result.getString("profile_path");
+
+                                if (!profileImage.equals("null")) {
+                                    String fullProfileImageUrl = "http://image.tmdb.org/t/p/w185" + profileImage;
+                                    crewList.add(new CreditPerson(name, id, fullProfileImageUrl, job));
+                                } else {
+                                    String dummyPic = "https://emgroupuk.com/wp-content/uploads/2018/06/profile-icon-9.png";
+                                    crewList.add(new CreditPerson(name, id, dummyPic, job));
+                                }
+                            }
+
+                            castAdapter = new CastAdapter(MovieInfoActivity.this, crewList);
+                            crewRecyclerView.setAdapter(castAdapter);
 
 
                         } catch (JSONException e) {

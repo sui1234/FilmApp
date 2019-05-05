@@ -34,7 +34,7 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         CreditPerson creditPerson = creditList.get(i);
 
-        viewHolder.character.setText(creditPerson.getCharacter());
+        viewHolder.character.setText(creditPerson.getCharacterJob());
         viewHolder.name.setText(creditPerson.getName());
         Glide.with(context)
                 .load(creditPerson.getProfileImageUrl())
