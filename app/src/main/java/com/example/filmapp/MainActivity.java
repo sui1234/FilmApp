@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         searchView = findViewById(R.id.search_view);
         searchMovies();
 
+
     }
 
     private void parseJson() {
@@ -121,14 +122,20 @@ public class MainActivity extends AppCompatActivity {
                 //Object [] editText = searchItem(newText);
                 Log.d("Sui text","change");
                 if (!TextUtils.isEmpty(newText)){
+
+                    Log.d("Sui text Change"," is not empty");
                     //movieList.setFilterText(newText);
                 }else{
+
+                    Log.d("Sui text Change"," is empty");
                     //movieList.clearTextFilter();
                 }
                 return false;
             }
 
         });
+
+        onCloseListener();
     }
 
     private void getSearchMovies(){
@@ -203,5 +210,20 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Sui","requestQueue");
 
 
+    }
+
+    private void onCloseListener(){
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+
+                movieList.clear();
+                parseJson();
+                Toast t = Toast.makeText(MainActivity.this, "close", Toast.LENGTH_SHORT);
+                t.show();
+
+                return false;
+            }
+        });
     }
 }
