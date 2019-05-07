@@ -1,7 +1,9 @@
 package com.example.filmapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
@@ -21,7 +23,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MovieInfoActivity extends AppCompatActivity {
+public class MovieInfoActivity extends AppCompatActivity implements RelatedMovieAdapter.OnMovieListener {
 
     ImageView moviePoster;
     TextView movieTitleTv;
@@ -32,16 +34,31 @@ public class MovieInfoActivity extends AppCompatActivity {
     TextView movieGenreTv;
     RecyclerView castRecyclerView;
     RecyclerView crewRecyclerView;
+    RecyclerView relatedMovieRecyclerView;
+
     RequestQueue requestQueue;
+
     CastAdapter castAdapter;
+    RelatedMovieAdapter relatedMovieAdapter;
+
     ArrayList<CreditPerson> castList;
     ArrayList<CreditPerson> crewList;
+    ArrayList<MovieItem> relatedMovieList;
+
+    public static final String EXTRA_MESSAGE = "com.example.filmapp.MovieInfoActivity";
+
+    String movieId = "299534";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_info);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            movieId = String.valueOf(extras.getInt(EXTRA_MESSAGE));
+        }
 
         moviePoster = findViewById(R.id.poster);
         movieTitleTv = findViewById(R.id.title);
@@ -52,20 +69,33 @@ public class MovieInfoActivity extends AppCompatActivity {
         movieDescriptionTv = findViewById(R.id.description);
         castRecyclerView = findViewById(R.id.castRecyclerView);
         crewRecyclerView = findViewById(R.id.crewRecyclerView);
+        relatedMovieRecyclerView = findViewById(R.id.relatedMoviesRecycler);
+
         castList = new ArrayList<>();
         crewList = new ArrayList<>();
+        relatedMovieList = new ArrayList<>();
 
         castRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         crewRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        relatedMovieRecyclerView.setLayoutManager(new GridLayoutManager(this, 4) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+
 
         requestQueue = Volley.newRequestQueue(this);
+
         parseMovieInfoJson();
         parseCastJson();
         parseCrewJson();
+        parseRelatedMovies();
+
     }
 
     private void parseMovieInfoJson() {
-        String url = "https://api.themoviedb.org/3/movie/299534?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=en-US";
+        String url = "https://api.themoviedb.org/3/movie/" + movieId + "?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=en-US&language=sv-SE";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -119,7 +149,7 @@ public class MovieInfoActivity extends AppCompatActivity {
     }
 
     private void parseCastJson() {
-        String url = "https://api.themoviedb.org/3/movie/299534/credits?api_key=7005ceb3ddacaaf788e2327647f0fa57";
+        String url = "https://api.themoviedb.org/3/movie/" + movieId + "/credits?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE*";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -164,7 +194,7 @@ public class MovieInfoActivity extends AppCompatActivity {
     }
 
     private void parseCrewJson() {
-        String url = "https://api.themoviedb.org/3/movie/299534/credits?api_key=7005ceb3ddacaaf788e2327647f0fa57";
+        String url = "https://api.themoviedb.org/3/movie/" + movieId + "/credits?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -204,5 +234,53 @@ public class MovieInfoActivity extends AppCompatActivity {
             }
         });
         requestQueue.add(request);
+    }
+
+    private void parseRelatedMovies() {
+        String url = "https://api.themoviedb.org/3/movie/" + movieId + "/similar?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=en-US&page=1";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("results");
+
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject result = jsonArray.getJSONObject(i);
+
+                                String title = result.getString("original_title");
+                                String poster = result.getString("poster_path");
+                                int id = result.getInt("id");
+
+                                String fullPosterUrl = "http://image.tmdb.org/t/p/w185" + poster;
+
+                                relatedMovieList.add(new MovieItem(title, fullPosterUrl, id));
+                            }
+
+                            relatedMovieAdapter = new RelatedMovieAdapter
+                                    (MovieInfoActivity.this, relatedMovieList, MovieInfoActivity.this);
+                            relatedMovieRecyclerView.setAdapter(relatedMovieAdapter);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        requestQueue.add(request);
+    }
+
+    @Override
+    public void onMovieClick(int position) {
+        int id = relatedMovieList.get(position).getId();
+        Intent intent = new Intent(this, MovieInfoActivity.class);
+        intent.putExtra(EXTRA_MESSAGE, id);
+        startActivity(intent);
     }
 }

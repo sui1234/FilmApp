@@ -39,6 +39,7 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.ViewHolder> {
         Glide.with(context)
                 .load(creditPerson.getProfileImageUrl())
                 .into(viewHolder.profileImage);
+
     }
 
     @Override
