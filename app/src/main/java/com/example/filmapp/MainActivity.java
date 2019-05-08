@@ -1,12 +1,10 @@
 package com.example.filmapp;
 
-import android.app.ProgressDialog;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -15,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -141,14 +138,9 @@ public class MainActivity extends AppCompatActivity {
                                     String shortDescription = description.substring(0, 120) + "...";
                                     movieList.add(new MovieItem(title, fullPosterUrl, release, shortDescription));
                                 } else {
-
                                     movieList.add(new MovieItem(title, fullPosterUrl, release, description));
                                 }
-
-
-
                             }
-
                             popularMoiveAdapter = new PopularMoiveAdapter(MainActivity.this, movieList);
 
                             recyclerView.setAdapter(popularMoiveAdapter);
