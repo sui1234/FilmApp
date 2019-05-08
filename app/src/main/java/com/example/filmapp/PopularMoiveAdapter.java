@@ -16,7 +16,6 @@ import java.util.ArrayList;
 public class PopularMoiveAdapter extends RecyclerView.Adapter<PopularMoiveAdapter.PopularMovieViewHolder> {
     private Context context;
     private ArrayList<MovieItem> movieList;
-
     public PopularMoiveAdapter(Context context, ArrayList<MovieItem> movieList) {
         this.context = context;
         this.movieList = movieList;
@@ -37,10 +36,13 @@ public class PopularMoiveAdapter extends RecyclerView.Adapter<PopularMoiveAdapte
         String title = currentItem.getTitle();
         String release = currentItem.getReleaseDate();
         String description = currentItem.getDescription();
+        if (i == 1){
 
+        }
         popularMovieViewHolder.movieTitle.setText(title);
         popularMovieViewHolder.movieRelease.setText(release);
         popularMovieViewHolder.movieDescription.setText(description);
+
         Glide.with(context).load(imageUrl)
                 .centerCrop()
                 .into(popularMovieViewHolder.moviePoster);
@@ -56,6 +58,7 @@ public class PopularMoiveAdapter extends RecyclerView.Adapter<PopularMoiveAdapte
         public ImageView moviePoster;
         public TextView movieTitle;
         public TextView movieRelease;
+        public TextView movieName;
         public TextView movieDescription;
 
         public PopularMovieViewHolder(@NonNull View itemView) {
@@ -65,6 +68,8 @@ public class PopularMoiveAdapter extends RecyclerView.Adapter<PopularMoiveAdapte
             movieTitle = itemView.findViewById(R.id.movie_title);
             movieRelease = itemView.findViewById(R.id.movie_release);
             movieDescription = itemView.findViewById(R.id.movie_description);
+            movieName = itemView.findViewById(R.id.movieName);
+
 
         }
     }

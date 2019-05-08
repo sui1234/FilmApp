@@ -1,17 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+
+
+
+<ScrollView
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/scrollView">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:paddingBottom="5dp"
+    android:background="@color/colorPrimary">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:scaleType="fitXY"
+        android:id="@+id/todayMoviewImage"
+        android:src="@mipmap/ic_launcher" />
+
+
+    <ImageView
+        android:id="@+id/imageLayout"
+        android:layout_width="match_parent"
+        android:layout_height="203dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:scaleType="fitXY"
+        android:src="@mipmap/imageoverlay" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="247dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="164dp"
+
+        android:layout_marginRight="164dp"
+        android:popupBackground="@color/colorPrimary"
+        android:spinnerMode="dialog"
+        android:textColor="#fff" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="131dp"
+        android:layout_alignTop="@+id/imageLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="94dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="33dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/group_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingRight="10dip"
+            android:paddingBottom="2dp"
+            android:singleLine="false"
+            android:text="SpiderMan 332"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/group_num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/group_type"
+            android:gravity="center|center_vertical"
+            android:paddingRight="10dip"
+            android:paddingBottom="2dp"
+            android:singleLine="true"
+            android:text="
+"
+            android:textColor="@color/grey2"
+            android:textSize="12sp"
+            app:fontFamily="@font/aref_ruqaa" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-10dp"
+            android:paddingRight="10dp"
+            android:orientation="horizontal">
+
+            <RatingBar
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numStars="1"
+                android:progressTint="@color/colorPrimaryDark"
+                android:rating="1" />
+
+            <TextView
+                android:id="@+id/movieTodayRate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="1.5dp"
+                android:text="8.7"
+                android:textColor="@color/white"
+                android:textSize="10dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
+    <!-- A RecyclerView to display horizontal list -->
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/circleMovies"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal"
+
+        android:background="@color/colorPrimary"/>
+
+    <TextView
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/colorPrimary"
+        android:padding="10dp"
+        android:text="All Dramas"/>
+
+    <!-- A RecyclerView to display list -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</android.support.constraint.ConstraintLayout>
+        android:background="@color/colorPrimary"
+        android:minHeight="840dp"
+        android:paddingBottom="20dp"
+        android:scrollbars="vertical" />
+
+
+
+</LinearLayout>
+</ScrollView>
+
+
+</RelativeLayout>
