@@ -1,6 +1,8 @@
 package com.example.filmapp;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -37,8 +39,9 @@ public class CirclearMovieAdapter extends RecyclerView.Adapter<CirclearMovieAdap
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         final MovieItem currentItem = movieListCircle.get(i);
 
-        String imageUrl = currentItem.getImageUrl();
+        String imageUrl = currentItem.getPosterImageUrl();
         final String title = currentItem.getTitle();
+        final String movie_id    = currentItem.getId2();
 
         viewHolder.mMovieName.setText(title);
         Glide.with(context).load(imageUrl)
@@ -47,7 +50,12 @@ public class CirclearMovieAdapter extends RecyclerView.Adapter<CirclearMovieAdap
         viewHolder.mMovieImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, title);
+                Log.d(TAG, "SDSD"+String.valueOf(movie_id));
+                Intent intent = new Intent (v.getContext(), MovieInfoActivity.class);
+                Bundle mBundle = new Bundle();
+                mBundle.putString("movie_id", movie_id);
+                intent.putExtras(mBundle);
+                context.startActivity(intent);
             }
         });
     }
