@@ -3,7 +3,6 @@ package com.example.filmapp;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,7 @@ public class PopularMoiveAdapter extends RecyclerView.Adapter<PopularMoiveAdapte
     public void onBindViewHolder(@NonNull PopularMovieViewHolder popularMovieViewHolder, int i) {
         MovieItem currentItem = movieList.get(i);
 
-        String imageUrl = currentItem.getImageUrl();
+        String imageUrl = currentItem.getPosterImageUrl();
         String title = currentItem.getTitle();
         String release = currentItem.getReleaseDate();
         String description = currentItem.getDescription();
