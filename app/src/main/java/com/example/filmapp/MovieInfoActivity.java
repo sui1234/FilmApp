@@ -1,5 +1,6 @@
 package com.example.filmapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +36,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
     RecyclerView castRecyclerView;
     RecyclerView crewRecyclerView;
     RecyclerView relatedMovieRecyclerView;
+    String movieId;
 
     RequestQueue requestQueue;
 
@@ -47,7 +49,6 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
 
     public static final String EXTRA_MESSAGE = "com.example.filmapp.MovieInfoActivity";
 
-    String movieId = "299534";
 
 
     @Override
@@ -57,7 +58,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            movieId = String.valueOf(extras.getInt(EXTRA_MESSAGE));
+            movieId = String.valueOf(extras.getString("movie_id"));
         }
 
         moviePoster = findViewById(R.id.poster);
@@ -86,11 +87,13 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
 
 
         requestQueue = Volley.newRequestQueue(this);
+        final ProgressDialog dialog = ProgressDialog.show(this, null, "Filmer laddas....");
 
         parseMovieInfoJson();
         parseCastJson();
         parseCrewJson();
         parseRelatedMovies();
+        dialog.dismiss();
 
     }
 
