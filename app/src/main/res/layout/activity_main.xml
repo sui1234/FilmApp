@@ -146,9 +146,10 @@ android:layout_height="fill_parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
-        android:textColor="@color/colorPrimary"
         android:padding="10dp"
-        android:text="All Dramas"/>
+        android:text="All Dramas"
+        android:textColor="@color/colorPrimary"
+        app:fontFamily="@font/cairo_bold" />
 
     <!-- A RecyclerView to display list -->
     <android.support.v7.widget.RecyclerView
