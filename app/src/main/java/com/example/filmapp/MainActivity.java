@@ -1,10 +1,9 @@
 package com.example.filmapp;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -63,14 +62,9 @@ public class MainActivity extends AppCompatActivity {
                                     String shortDescription = description.substring(0, 120) + "...";
                                     movieList.add(new MovieItem(title, fullPosterUrl, release, shortDescription));
                                 } else {
-
                                     movieList.add(new MovieItem(title, fullPosterUrl, release, description));
                                 }
-
-
-
                             }
-
                             popularMoiveAdapter = new PopularMoiveAdapter(MainActivity.this, movieList);
                             recyclerView.setAdapter(popularMoiveAdapter);
 
