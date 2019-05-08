@@ -1,9 +1,9 @@
 package com.example.filmapp;
 
 import android.app.ProgressDialog;
-import android.os.Bundle;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -118,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
                                 String release = result.getString("release_date");
                                 String description = result.getString("overview");
                                 String poster = result.getString("poster_path");
+                                String id     = result.getString("id");
 
                                 String fullPosterUrl = "http://image.tmdb.org/t/p/w500" + poster;
                                 if (i == 0){
@@ -138,16 +138,11 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 if (description.length() > 120) {
                                     String shortDescription = description.substring(0, 120) + "...";
-                                    movieList.add(new MovieItem(title, fullPosterUrl, release, shortDescription));
+                                    movieList.add(new MovieItem(title, fullPosterUrl, release, shortDescription,id));
                                 } else {
-
-                                    movieList.add(new MovieItem(title, fullPosterUrl, release, description));
+                                    movieList.add(new MovieItem(title, fullPosterUrl, release, description,id));
                                 }
-
-
-
                             }
-
                             popularMoiveAdapter = new PopularMoiveAdapter(MainActivity.this, movieList);
 
                             recyclerView.setAdapter(popularMoiveAdapter);
