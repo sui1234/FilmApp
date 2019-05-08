@@ -1,7 +1,6 @@
 package com.example.filmapp;
 
 import android.app.ProgressDialog;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
