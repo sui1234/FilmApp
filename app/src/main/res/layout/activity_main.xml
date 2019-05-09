@@ -134,7 +134,7 @@ android:layout_height="fill_parent"
 </RelativeLayout>
     <!-- A RecyclerView to display horizontal list -->
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/circleMovies"
         android:layout_width="fill_parent"
         android:layout_height="150dp"
@@ -152,7 +152,7 @@ android:layout_height="fill_parent"
         app:fontFamily="@font/cairo_bold" />
 
     <!-- A RecyclerView to display list -->
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"

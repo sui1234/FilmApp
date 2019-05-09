@@ -3,10 +3,7 @@ package com.example.filmapp;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,12 +14,21 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MovieInfoActivity extends AppCompatActivity implements RelatedMovieAdapter.OnMovieListener {
 
@@ -36,6 +42,9 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
     RecyclerView castRecyclerView;
     RecyclerView crewRecyclerView;
     RecyclerView relatedMovieRecyclerView;
+    FrameLayout frameLayout;
+    YouTubePlayerView youTubePlayerView;
+
     String movieId;
 
     RequestQueue requestQueue;
@@ -71,6 +80,9 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         castRecyclerView = findViewById(R.id.castRecyclerView);
         crewRecyclerView = findViewById(R.id.crewRecyclerView);
         relatedMovieRecyclerView = findViewById(R.id.relatedMoviesRecycler);
+        frameLayout = findViewById(R.id.header);
+
+        youTubePlayerView = findViewById(R.id.youtube_player_view);
 
         castList = new ArrayList<>();
         crewList = new ArrayList<>();
@@ -93,6 +105,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         parseCastJson();
         parseCrewJson();
         parseRelatedMovies();
+        parseVideosJson();
         dialog.dismiss();
 
     }
@@ -269,6 +282,49 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
                             e.printStackTrace();
                         }
 
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        requestQueue.add(request);
+    }
+
+    private void parseVideosJson() {
+        String url = "https://api.themoviedb.org/3/movie/" + movieId + "/videos?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=en-US";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("results");
+
+                            JSONObject result = jsonArray.getJSONObject(0);
+
+                            final String key = result.getString("key");
+                            String site = result.getString("site");
+
+                            if (result != null && site.equals("YouTube")) {
+                                frameLayout.removeView(moviePoster);
+
+                                getLifecycle().addObserver(youTubePlayerView);
+
+                                youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                                    @Override
+                                    public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                                        youTubePlayer.cueVideo(key, 0);
+                                    }
+                                });
+                            } else {
+                                frameLayout.removeView(youTubePlayerView);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
