@@ -3,6 +3,10 @@ package com.example.filmapp;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +16,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+
+import static com.android.volley.VolleyLog.TAG;
+
 
 public class RelatedMovieAdapter extends RecyclerView.Adapter<RelatedMovieAdapter.ViewHolder> {
     Context context;
@@ -33,7 +40,7 @@ public class RelatedMovieAdapter extends RecyclerView.Adapter<RelatedMovieAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        MovieItem currentItem = movieList.get(i);
+        final MovieItem currentItem = movieList.get(i);
 
         String title = currentItem.getTitle();
         String posterUrl = currentItem.getPosterImageUrl();
@@ -43,6 +50,7 @@ public class RelatedMovieAdapter extends RecyclerView.Adapter<RelatedMovieAdapte
                 .load(posterUrl)
                 .centerCrop()
                 .into(viewHolder.poster);
+
 
     }
 
@@ -67,7 +75,13 @@ public class RelatedMovieAdapter extends RecyclerView.Adapter<RelatedMovieAdapte
 
         @Override
         public void onClick(View view) {
-            onMovieListener.onMovieClick(getAdapterPosition());
+            Log.d(TAG, "onClick: sssss"+movieList.get(getAdapterPosition()).getId());
+            final MovieItem currentItem = movieList.get(getAdapterPosition());
+            Intent intent = new Intent (view.getContext(), MovieInfoActivity.class);
+            Bundle mBundle = new Bundle();
+            mBundle.putString("movie_id", String.valueOf(currentItem.getId()));
+            intent.putExtras(mBundle);
+            context.startActivity(intent);
         }
     }
 
