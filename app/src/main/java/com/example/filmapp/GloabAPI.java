@@ -25,11 +25,6 @@ public class GloabAPI extends Application {
     public String mMovie,mMovieJSON;
 
 
-
-
-
-
-
     public void setmMovies(String url) {
         request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -63,6 +58,4 @@ public class GloabAPI extends Application {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(request);
     }
-
-
 }

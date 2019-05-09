@@ -2,6 +2,7 @@ package com.example.filmapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -49,7 +50,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
 
     public static final String EXTRA_MESSAGE = "com.example.filmapp.MovieInfoActivity";
 
-
+    public static final String SHARED_PREFS = "sharedPrefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -285,5 +286,20 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         Intent intent = new Intent(this, MovieInfoActivity.class);
         intent.putExtra(EXTRA_MESSAGE, id);
         startActivity(intent);
+    }
+
+    public void saveFavorite() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        //editor.putString( ,movieId);
+        // Save here ------
+        // Ska spara id till filmen som string i arraylista (inte klar)
+        editor.apply();
+    }
+
+    public void loadFavorites() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        // Inte klar
     }
 }
