@@ -3,6 +3,9 @@ package com.example.filmapp;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,15 +33,13 @@ public class PopularMoiveAdapter extends RecyclerView.Adapter<PopularMoiveAdapte
 
     @Override
     public void onBindViewHolder(@NonNull PopularMovieViewHolder popularMovieViewHolder, int i) {
-        MovieItem currentItem = movieList.get(i);
+        final MovieItem currentItem = movieList.get(i);
 
         String imageUrl = currentItem.getPosterImageUrl();
         String title = currentItem.getTitle();
         String release = currentItem.getReleaseDate();
         String description = currentItem.getDescription();
-        if (i == 1){
 
-        }
         popularMovieViewHolder.movieTitle.setText(title);
         popularMovieViewHolder.movieRelease.setText(release);
         popularMovieViewHolder.movieDescription.setText(description);
@@ -46,6 +47,17 @@ public class PopularMoiveAdapter extends RecyclerView.Adapter<PopularMoiveAdapte
         Glide.with(context).load(imageUrl)
                 .centerCrop()
                 .into(popularMovieViewHolder.moviePoster);
+
+        popularMovieViewHolder.moviePoster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (v.getContext(), MovieInfoActivity.class);
+                Bundle mBundle = new Bundle();
+                mBundle.putString("movie_id", currentItem.getId2());
+                intent.putExtras(mBundle);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

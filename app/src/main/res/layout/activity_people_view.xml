@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:background="@color/colorPrimary">
+
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/colorPrimary"
+            android:paddingBottom="5dp">
+
+            <ImageView
+                android:id="@+id/peopleImage"
+                android:layout_width="match_parent"
+                android:layout_height="479dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/ic_launcher" />
+
+
+            <ImageView
+                android:id="@+id/imageLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="310dp"
+                android:layout_marginEnd="0dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/imageoverlay" />
+
+
+            <TextView
+                android:id="@+id/people_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="396dp"
+                android:gravity="left"
+                android:paddingRight="10dip"
+                android:paddingBottom="2dp"
+                android:singleLine="false"
+                android:text="SpiderMan 332"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/people_birth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="430dp"
+                android:gravity="left"
+                android:paddingRight="10dip"
+                android:paddingBottom="2dp"
+                android:singleLine="false"
+                android:text="SpiderMan 332"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="10sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/people_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="451dp"
+
+                android:gravity="left"
+                android:paddingRight="10dip"
+                android:paddingBottom="2dp"
+                android:singleLine="false"
+                android:text="Spider"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+
+</RelativeLayout>

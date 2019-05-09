@@ -23,10 +23,10 @@
         android:layout_marginTop="3dp"
         android:gravity="center"
         android:text="Credit Name"
-        android:textColor="#000"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="@+id/profile_image"
         app:layout_constraintStart_toStartOf="@+id/profile_image"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image"/>
+        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
     <TextView
         android:id="@+id/character"
@@ -35,8 +35,9 @@
         android:layout_marginTop="3dp"
         android:gravity="center"
         android:text="Character name"
+        android:textColor="@color/grey2"
         app:layout_constraintEnd_toEndOf="@+id/name"
         app:layout_constraintStart_toStartOf="@+id/name"
-        app:layout_constraintTop_toBottomOf="@+id/name"/>
+        app:layout_constraintTop_toBottomOf="@+id/name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

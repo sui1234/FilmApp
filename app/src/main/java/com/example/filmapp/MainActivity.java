@@ -31,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView, mRecycleViewRound;
     private PopularMoiveAdapter popularMoiveAdapter;
     private CirclearMovieAdapter circleMoiveAdapter;
-    private ArrayList<MovieItem> movieList;
+    private ArrayList<MovieItem> movieList, movileList2;
     private RequestQueue requestQueue,requestQueue2;
     private TextView mTodaysMovieTitle, mTodaysMovieRate,mText;
     private ImageView mTodaysMovieImage;
-    private  JSONArray jsonArray,jsonArray2,jsonGerenes;
+    private  JSONArray jsonGerenes;
     private String gereners;
     private Spinner mDropDown;
     @Override
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         movieList = new ArrayList<>();
+        movileList2 = new ArrayList<>();
         requestQueue = Volley.newRequestQueue(this);
         requestQueue2 = Volley.newRequestQueue(this);
         mText = findViewById(R.id.group_num);
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "onItemSelected: "+item.toString());
                         if (item.toString().equals("På bio nu")){
 
-                            parseJson("https://api.themoviedb.org/3/movie/now_playing?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=se-SV&page=1");
+                            parseJson("https://api.themoviedb.org/3/movie/now_playing?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE&page=1");
 
                         }
                         if (item.toString().equals("Top listan")){
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                         if (item.toString().equals("Kommande filmer")){
-                            parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=en-US&page=1");
+                            parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE&page=1");
 
                         }
                     }
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
-    parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=en-US&page=1");
+    parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE&page=1");
 
 
 
@@ -110,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                             jsonArray = response.getJSONArray("results");
 
                             movieList.clear();
+                            movileList2.clear();
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject result = jsonArray.getJSONObject(i);
 
@@ -137,16 +139,26 @@ public class MainActivity extends AppCompatActivity {
 
                                 }
                                 if (description.length() > 120) {
-                                    String shortDescription = description.substring(0, 120) + "...";
-                                    movieList.add(new MovieItem(title, fullPosterUrl, release, shortDescription,id));
-                                } else {
-                                    movieList.add(new MovieItem(title, fullPosterUrl, release, description,id));
+                                    description = description.substring(0, 120) + "...";
                                 }
+
+                                if (i < 10){
+                                    movieList.add(new MovieItem(title, fullPosterUrl, release, description,id));
+
+                                }
+                                else {
+                                    movileList2.add(new MovieItem(title, fullPosterUrl, release, description,id));
+
+                                }
+
+
+
+
                             }
                             popularMoiveAdapter = new PopularMoiveAdapter(MainActivity.this, movieList);
 
                             recyclerView.setAdapter(popularMoiveAdapter);
-                            circleMoiveAdapter = new CirclearMovieAdapter(MainActivity.this, movieList);
+                            circleMoiveAdapter = new CirclearMovieAdapter(MainActivity.this, movileList2);
                             mRecycleViewRound.setAdapter(circleMoiveAdapter);
 
                         } catch (JSONException e) {

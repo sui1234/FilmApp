@@ -40,7 +40,6 @@ public class CirclearMovieAdapter extends RecyclerView.Adapter<CirclearMovieAdap
 
         String imageUrl = currentItem.getPosterImageUrl();
         final String title = currentItem.getTitle();
-        final String movie_id    = currentItem.getId2();
 
         viewHolder.mMovieName.setText(title);
         Glide.with(context).load(imageUrl)
@@ -49,7 +48,6 @@ public class CirclearMovieAdapter extends RecyclerView.Adapter<CirclearMovieAdap
         viewHolder.mMovieImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "SDSD"+String.valueOf(movie_id));
                 Intent intent = new Intent (v.getContext(), MovieInfoActivity.class);
                 Bundle mBundle = new Bundle();
                 mBundle.putString("movie_id", currentItem.getId2());
