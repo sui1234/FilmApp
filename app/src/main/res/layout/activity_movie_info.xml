@@ -114,19 +114,24 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:text="Release date"
+            android:textColor="@color/colorPrimaryDark"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title" />
 
         <TextView
             android:id="@+id/genres"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:text="Genres"
+            android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="@+id/release"
+            app:layout_constraintEnd_toStartOf="@+id/runtime"
             app:layout_constraintStart_toEndOf="@+id/release"
-            app:layout_constraintTop_toTopOf="@+id/release" />
+            app:layout_constraintTop_toTopOf="@+id/release"/>
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
