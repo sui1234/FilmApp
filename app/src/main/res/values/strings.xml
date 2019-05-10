@@ -1,8 +1,15 @@
 <resources>
     <string name="app_name">FilmApp</string>
-<string-array name="dropdownArray">
-    <item>Kommande filmer</item>
-    <item>Top listan</item>
-    <item>På bio nu</item>
-</string-array>
+    <string-array name="dropdownArray">
+        <item>Kommande filmer</item>
+        <item>Top listan</item>
+        <item>På bio nu</item>
+    </string-array>
+    
+    
+    <string name="actorBirthdayText">Födelsedag:</string>
+    <string name="actorDeathDay">Dödsdag:</string>
+    <string name="actorBirthPlace">Födelseort:</string>
+    <string name="actorBiography">Biografi:</string>
+    <string name="actorLoading">Skådespelare laddas...</string>
 </resources>
