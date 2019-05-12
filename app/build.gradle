@@ -35,6 +35,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
+    //shimmer placeholder
+    implementation 'com.ethanhua:skeleton:1.1.2'
+    implementation 'io.supercharge:shimmerlayout:2.1.0'
+
+
     //Mazen
     //hämat loading bar
     implementation 'com.jackandphantom.android:circularimageview:1.2.0'
