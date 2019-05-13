@@ -1,6 +1,7 @@
 package com.example.filmapp;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -91,11 +92,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE&page=1");
-
-
-
-
-
+    //parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=en-US&page=1");
+    //5fe35736cbb951d6b4f4a33132684aa8fc0566fc
 
     }
     private void parseJson(String url) {
@@ -112,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
                             movieList.clear();
                             movileList2.clear();
-                            for (int i = 0; i < jsonArray.length(); i++) {
+                            for (int i = 0; i < jsonArray.length(); i++)    {
                                 JSONObject result = jsonArray.getJSONObject(i);
 
                                 String title = result.getString("original_title");
@@ -131,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
                                     mTodaysMovieRate.setText(result.getString("vote_average"));
                                     JSONArray gernes_array = result.getJSONArray("genre_ids");
                                     mTodaysMovieTitle.setText(result.getString("original_title"));
-
 
                                         getGenerParse(gernes_array);
 
@@ -199,7 +196,6 @@ public class MainActivity extends AppCompatActivity {
                                                 }
                                             }
 
-
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -223,8 +219,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         requestQueue.add(request);
-
     }
 
-
+    public void openMovieInfo(View v) {
+        Intent intent = new Intent(this, MovieInfoActivity.class);
+        startActivity(intent);
+        Log.d(TAG, "openMovieInfo: Function Called");
+    }
 }

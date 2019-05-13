@@ -2,11 +2,16 @@ package com.example.filmapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -15,6 +20,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -23,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
@@ -59,7 +67,9 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
 
     public static final String EXTRA_MESSAGE = "com.example.filmapp.MovieInfoActivity";
 
-
+    public static final String SHARED_PREFS = "sharedPrefs";
+    public static final String FAVORITE_ARRAY_LIST = "favorites";
+    ArrayList<MovieID> movieIDArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +100,8 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         castList = new ArrayList<>();
         crewList = new ArrayList<>();
         relatedMovieList = new ArrayList<>();
+
+
 
         castRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         crewRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -344,5 +356,43 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         Intent intent = new Intent(this, MovieInfoActivity.class);
         intent.putExtra(EXTRA_MESSAGE, id);
         startActivity(intent);
+    }
+
+
+
+    public void saveFavoriteToPreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(movieIDArrayList);
+        editor.putString(FAVORITE_ARRAY_LIST, json);
+        editor.apply();
+    }
+
+    public void loadFavoritesFromSharedPreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(FAVORITE_ARRAY_LIST, null);
+        Type type = new TypeToken<ArrayList<MovieID>>() {}.getType();
+        movieIDArrayList = gson.fromJson(json, type);
+
+        if (movieIDArrayList == null) {
+            movieIDArrayList = new ArrayList<>();
+        }
+    }
+
+    public void saveToFavorites(View v) {
+        MovieID movieID = new MovieID(movieId);
+        movieIDArrayList.add(movieID);
+
+        Toast.makeText(this, "movie id is: " + movieId, Toast.LENGTH_SHORT).show();
+        for (int i = 0; i < movieIDArrayList.size(); i ++) {
+            Log.d("!!!", "saveToFavorites: " +  movieIDArrayList.get(i));
+        }
+    }
+
+    @Override
+    public String toString() {
+        return movieId;
     }
 }
