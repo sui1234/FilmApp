@@ -78,6 +78,8 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         getSupportActionBar().hide();
         setContentView(R.layout.activity_movie_info);
 
+        loadFavoritesFromPreferences();
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             movieId = String.valueOf(extras.getString("movie_id"));
@@ -369,7 +371,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         editor.apply();
     }
 
-    public void loadFavoritesFromSharedPreferences() {
+    public void loadFavoritesFromPreferences() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString(FAVORITE_ARRAY_LIST, null);
@@ -382,12 +384,18 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
     }
 
     public void saveToFavorites(View v) {
-        MovieID movieID = new MovieID(movieId);
-        movieIDArrayList.add(movieID);
+        // OM filmen finns i listan så ta bort den ANNARS lägg till den
+        if (movieIDArrayList.contains(movieId)) {
+            movieIDArrayList.remove(movieId);
+        } else {
+            MovieID movieID = new MovieID(movieId);
+            movieIDArrayList.add(movieID);
+            saveFavoriteToPreferences();
 
-        Toast.makeText(this, "movie id is: " + movieId, Toast.LENGTH_SHORT).show();
-        for (int i = 0; i < movieIDArrayList.size(); i ++) {
-            Log.d("!!!", "saveToFavorites: " +  movieIDArrayList.get(i));
+            Toast.makeText(this, "movie id is: " + movieId, Toast.LENGTH_SHORT).show();
+            for (int i = 0; i < movieIDArrayList.size(); i++) {
+                Log.d("!!!", "saveToFavorites: " + movieIDArrayList.get(i));
+            }
         }
     }
 

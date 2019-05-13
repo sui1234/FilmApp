@@ -37,7 +37,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         //viewHolder.the_poster.setImageURI(movieDetails.getThe_poster());
         viewHolder.the_title.setText((CharSequence) movieDetails.getThe_title());
         viewHolder.the_release_date.setText((CharSequence) movieDetails.getThe_release_date());
-        viewHolder.the_description.setText((CharSequence) movieDetails.getThe_decription());
+        viewHolder.the_description.setText((CharSequence) movieDetails.getThe_description());
     }
 
     @Override
