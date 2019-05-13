@@ -1,11 +1,9 @@
 package com.example.filmapp;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -21,10 +20,16 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -32,12 +37,14 @@ public class MainActivity extends AppCompatActivity {
     private PopularMoiveAdapter popularMoiveAdapter;
     private CirclearMovieAdapter circleMoiveAdapter;
     private ArrayList<MovieItem> movieList, movileList2;
-    private RequestQueue requestQueue,requestQueue2;
-    private TextView mTodaysMovieTitle, mTodaysMovieRate,mText;
+    private RequestQueue requestQueue, requestQueue2;
+    private TextView mTodaysMovieTitle, mTodaysMovieRate, mText;
     private ImageView mTodaysMovieImage;
-    private  JSONArray jsonGerenes;
+    private JSONArray jsonGerenes;
     private String gereners;
     private Spinner mDropDown;
+    ImageView searchImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         mDropDown = findViewById(R.id.spinner);
         mRecycleViewRound = findViewById(R.id.circleMovies);
         mRecycleViewRound.setHasFixedSize(true);
-        mRecycleViewRound.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false));
+        mRecycleViewRound.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -61,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
         mText = findViewById(R.id.group_num);
 
 
-        ArrayAdapter<String> dropdownAdapter = new ArrayAdapter<String> (MainActivity.this,
-                R.layout.dropdown_item,getResources().getStringArray(R.array.dropdownArray));
+        ArrayAdapter<String> dropdownAdapter = new ArrayAdapter<String>(MainActivity.this,
+                R.layout.dropdown_item, getResources().getStringArray(R.array.dropdownArray));
         dropdownAdapter.setDropDownViewResource(R.layout.dropdown_item);
         mDropDown.setAdapter(dropdownAdapter);
         mDropDown.setOnItemSelectedListener(
@@ -70,27 +77,53 @@ public class MainActivity extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                         ((TextView) view).setTextColor(Color.WHITE);
                         Object item = parent.getItemAtPosition(pos);
-                        Log.d(TAG, "onItemSelected: "+item.toString());
-                        if (item.toString().equals("På bio nu")){
+                        Log.d(TAG, "onItemSelected: " + item.toString());
+                        if (item.toString().equals("På bio nu")) {
 
                             parseJson("https://api.themoviedb.org/3/movie/now_playing?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE&page=1");
 
                         }
-                        if (item.toString().equals("Top listan")){
+                        if (item.toString().equals("Top listan")) {
                             parseJson("https://api.themoviedb.org/3/movie/top_rated?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE&page=1\n");
 
                         }
-                        if (item.toString().equals("Kommande filmer")){
+                        if (item.toString().equals("Kommande filmer")) {
                             parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE&page=1");
 
                         }
                     }
+
                     public void onNothingSelected(AdapterView<?> parent) {
                     }
                 });
 
 
-    parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE&page=1");
+        //parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE&page=1");
+
+
+        searchImage = findViewById(R.id.search_image);
+        searchImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null){
+            String url = bundle.getString("url");
+            Log.d("Sui get intent","url "+url);
+
+            movileList2.clear();
+            movieList.clear();
+
+            parseJson(url);
+
+        }else{
+            parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE&page=1");
+        }
 
 
 
@@ -98,8 +131,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
     private void parseJson(String url) {
         final ProgressDialog dialog = ProgressDialog.show(this, null, "Filmer laddas....");
+
 
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -110,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
                             JSONArray jsonArray = null;
                             jsonArray = response.getJSONArray("results");
 
+                            Log.d("Sui result","length" + jsonArray.length());
                             movieList.clear();
                             movileList2.clear();
                             for (int i = 0; i < jsonArray.length(); i++) {
@@ -119,13 +155,13 @@ public class MainActivity extends AppCompatActivity {
                                 String release = result.getString("release_date");
                                 String description = result.getString("overview");
                                 String poster = result.getString("poster_path");
-                                String id     = result.getString("id");
+                                String id = result.getString("id");
 
                                 String fullPosterUrl = "http://image.tmdb.org/t/p/w500" + poster;
-                                if (i == 0){
+                                if (i == 0) {
 
                                     mTodaysMovieTitle = findViewById(R.id.group_type);
-                                    mTodaysMovieImage =  findViewById(R.id.todayMoviewImage);
+                                    mTodaysMovieImage = findViewById(R.id.todayMoviewImage);
                                     mTodaysMovieRate = findViewById(R.id.movieTodayRate);
 
                                     mTodaysMovieRate.setText(result.getString("vote_average"));
@@ -133,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                                     mTodaysMovieTitle.setText(result.getString("original_title"));
 
 
-                                        getGenerParse(gernes_array);
+                                    getGenerParse(gernes_array);
 
                                     Glide.with(getApplication()).load(fullPosterUrl).centerCrop().into(mTodaysMovieImage);
 
@@ -142,16 +178,13 @@ public class MainActivity extends AppCompatActivity {
                                     description = description.substring(0, 120) + "...";
                                 }
 
-                                if (i < 10){
-                                    movieList.add(new MovieItem(title, fullPosterUrl, release, description,id));
+                                if (i < 10) {
+                                    movieList.add(new MovieItem(title, fullPosterUrl, release, description, id));
+
+                                } else {
+                                    movileList2.add(new MovieItem(title, fullPosterUrl, release, description, id));
 
                                 }
-                                else {
-                                    movileList2.add(new MovieItem(title, fullPosterUrl, release, description,id));
-
-                                }
-
-
 
 
                             }
@@ -186,15 +219,15 @@ public class MainActivity extends AppCompatActivity {
                                         try {
                                             JSONArray grn_array = response.getJSONArray("genres");
                                             gereners = "";
-                                            for (int ig = 0; ig <= jsonGerenes.length();ig++){
+                                            for (int ig = 0; ig <= jsonGerenes.length(); ig++) {
                                                 int gre_id = (int) jsonGerenes.get(ig);
 
-                                                for (int i = 0;i<grn_array.length();i++){
+                                                for (int i = 0; i < grn_array.length(); i++) {
                                                     JSONObject gener_name = grn_array.getJSONObject(i);
                                                     int id = gener_name.getInt("id");
                                                     String name = gener_name.getString("name");
-                                                    if (gre_id == id){
-                                                        gereners = name+" - "+ gereners;
+                                                    if (gre_id == id) {
+                                                        gereners = name + " - " + gereners;
                                                     }
                                                 }
                                             }
@@ -225,6 +258,7 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(request);
 
     }
+
 
 
 }

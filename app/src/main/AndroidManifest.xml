@@ -13,7 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".People.people_view"></activity>
+        <activity android:name=".SearchActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        </activity>
+        <activity android:name=".People.people_view" />
         <activity android:name=".MovieInfoActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

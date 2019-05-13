@@ -59,6 +59,7 @@ android:layout_height="fill_parent"
         android:spinnerMode="dialog"
         android:textColor="#fff" />
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="131dp"
@@ -130,6 +131,16 @@ android:layout_height="fill_parent"
         </LinearLayout>
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/search_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/spinner"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        app:srcCompat="@drawable/ic_search_black_24dp" />
 
 </RelativeLayout>
     <!-- A RecyclerView to display horizontal list -->
