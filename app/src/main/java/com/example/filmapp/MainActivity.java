@@ -51,7 +51,10 @@ public class MainActivity extends AppCompatActivity {
     private String gereners,lokale;
 
     private Spinner mDropDown;
-    ShimmerLayout shimmerLayout;
+
+//  placeholders
+    ShimmerLayout verticalShimmerLayout;
+    ShimmerLayout horizontalShimmerLayout;
 
 
     @Override
@@ -61,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
-
 
         mDropDown = findViewById(R.id.spinner);
         mRecycleViewRound = findViewById(R.id.circleMovies);
@@ -77,7 +79,8 @@ public class MainActivity extends AppCompatActivity {
         requestQueue2 = Volley.newRequestQueue(this);
         mText = findViewById(R.id.group_num);
 
-        shimmerLayout = findViewById(R.id.shimmer_layout);
+        verticalShimmerLayout = findViewById(R.id.vertical_shimmer_layout);
+        horizontalShimmerLayout = findViewById(R.id.horizontal_shimmer_layout);
 
         lokale = Locale.getDefault().getLanguage()+"-"+Locale.getDefault().getCountry();
         today_rel = (RelativeLayout)findViewById(R.id.today_relative);
@@ -131,7 +134,8 @@ public class MainActivity extends AppCompatActivity {
     }
     private void parseJson(String url) {
         //final ProgressDialog dialog = ProgressDialog.show(this, null, "Filmer laddas....");
-        shimmerLayout.startShimmerAnimation();
+        verticalShimmerLayout.startShimmerAnimation();
+        horizontalShimmerLayout.startShimmerAnimation();
 
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -194,15 +198,16 @@ public class MainActivity extends AppCompatActivity {
                         movieList.remove(0);
                         popularMoiveAdapter.notifyDataSetChanged();
                         circleMoiveAdapter.notifyDataSetChanged();
-//                        new android.os.Handler().postDelayed(
-//                                new Runnable() {
-//                                    public void run() {
-//                                        dialog.dismiss();
-//                                    }
-//                                },
-//                                1000);
-                        shimmerLayout.stopShimmerAnimation();
-                        shimmerLayout.setVisibility(View.GONE);
+                        new android.os.Handler().postDelayed(
+                                new Runnable() {
+                                    public void run() {
+                                        verticalShimmerLayout.stopShimmerAnimation();
+                                        verticalShimmerLayout.setVisibility(View.GONE);
+                                        horizontalShimmerLayout.stopShimmerAnimation();
+                                        horizontalShimmerLayout.setVisibility(View.GONE);
+                                    }
+                                },
+                                6000);
                     }
 
 

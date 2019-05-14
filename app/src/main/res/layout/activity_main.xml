@@ -144,13 +144,36 @@ android:layout_height="fill_parent"
     </RelativeLayout>
     <!-- A RecyclerView to display horizontal list -->
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/circleMovies"
-        android:layout_width="fill_parent"
-        android:layout_height="150dp"
-        android:orientation="horizontal"
+    <FrameLayout
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+        <io.supercharge.shimmerlayout.ShimmerLayout
+            android:id="@+id/horizontal_shimmer_layout"
+            app:shimmer_animation_duration="1200"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        android:background="@color/colorPrimary"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:orientation="horizontal">
+                <include layout="@layout/circular_item_placeholder"/>
+                <include layout="@layout/circular_item_placeholder"/>
+                <include layout="@layout/circular_item_placeholder"/>
+                <include layout="@layout/circular_item_placeholder"/>
+                <include layout="@layout/circular_item_placeholder"/>
+            </LinearLayout>
+
+        </io.supercharge.shimmerlayout.ShimmerLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/circleMovies"
+            android:layout_width="fill_parent"
+            android:layout_height="150dp"
+            android:orientation="horizontal"/>
+    </FrameLayout>
 
     <TextView
         android:id="@+id/divider"
@@ -168,7 +191,7 @@ android:layout_height="fill_parent"
         android:layout_height="wrap_content">
 
         <io.supercharge.shimmerlayout.ShimmerLayout
-            android:id="@+id/shimmer_layout"
+            android:id="@+id/vertical_shimmer_layout"
             app:shimmer_animation_duration="1200"
             app:layout_constraintTop_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
