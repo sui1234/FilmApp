@@ -51,7 +51,6 @@ public class RelatedMovieAdapter extends RecyclerView.Adapter<RelatedMovieAdapte
                 .centerCrop()
                 .into(viewHolder.poster);
 
-
     }
 
     @Override
@@ -69,7 +68,6 @@ public class RelatedMovieAdapter extends RecyclerView.Adapter<RelatedMovieAdapte
             poster = itemView.findViewById(R.id.poster);
             title = itemView.findViewById(R.id.title);
             this.onMovieListener = onMovieListener;
-
             itemView.setOnClickListener(this);
         }
 

@@ -43,5 +43,15 @@ dependencies {
     //Mazen
     //hämat loading bar
     implementation 'com.jackandphantom.android:circularimageview:1.2.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    //hämtar navmenuEX
+    implementation 'com.github.ittianyu:BottomNavigationViewEx:2.0.4'
 
+
+}
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
+        maven { url "https://maven.google.com" }
+    }
 }

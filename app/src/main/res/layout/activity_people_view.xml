@@ -12,6 +12,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
+        android:layout_above="@+id/view2"
         android:layout_marginTop="0dp"
         android:background="@color/colorPrimary">
 
@@ -57,7 +58,6 @@
                 android:paddingRight="10dip"
                 android:paddingBottom="2dp"
                 android:singleLine="false"
-                android:text="SpiderMan 332"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -73,7 +73,6 @@
                 android:paddingRight="10dip"
                 android:paddingBottom="2dp"
                 android:singleLine="false"
-                android:text="SpiderMan 332"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="10sp"
                 android:textStyle="italic" />
@@ -90,7 +89,6 @@
                 android:paddingRight="10dip"
                 android:paddingBottom="2dp"
                 android:singleLine="false"
-                android:text="Spider"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
@@ -99,6 +97,20 @@
 
 
     </ScrollView>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:id="@+id/view2"
+        android:layout_above="@+id/bnve"
+        android:background="@color/colorPrimaryDark"></View>
+    <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+        android:id="@+id/bnve"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
+        app:menu="@menu/bottomnavigationmenu" />
 
 </RelativeLayout>
