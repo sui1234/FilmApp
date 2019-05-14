@@ -37,8 +37,23 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
+    //shimmer placeholder
+    implementation 'com.ethanhua:skeleton:1.1.2'
+    implementation 'io.supercharge:shimmerlayout:2.1.0'
+
+
     //Mazen
     //hämat loading bar
     implementation 'com.jackandphantom.android:circularimageview:1.2.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    //hämtar navmenuEX
+    implementation 'com.github.ittianyu:BottomNavigationViewEx:2.0.4'
 
+
+}
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
+        maven { url "https://maven.google.com" }
+    }
 }

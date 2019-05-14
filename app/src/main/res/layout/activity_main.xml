@@ -13,125 +13,135 @@ android:layout_height="fill_parent"
 <ScrollView
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:id="@+id/scrollView">
+    android:id="@+id/scrollView"
+    android:layout_above="@+id/view_ab">
 
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
     android:orientation="vertical">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="5dp"
-    android:background="@color/colorPrimary">
 
-    <ImageView
+    <RelativeLayout
+        android:id="@+id/today_relative"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:scaleType="fitXY"
-        android:id="@+id/todayMoviewImage"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:paddingBottom="5dp">
 
+        <ImageView
+            android:id="@+id/todayMoviewImage"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_launcher" />
 
-    <ImageView
-        android:id="@+id/imageLayout"
-        android:layout_width="match_parent"
-        android:layout_height="203dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="0dp"
-        android:scaleType="fitXY"
-        android:src="@mipmap/imageoverlay" />
-
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="247dp"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="164dp"
-
-        android:layout_marginRight="164dp"
-        android:popupBackground="@color/colorPrimary"
-        android:spinnerMode="dialog"
-        android:textColor="#fff" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="131dp"
-        android:layout_alignTop="@+id/imageLayout"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="94dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginBottom="33dp"
-        android:gravity="center"
-        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/group_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingRight="10dip"
-            android:paddingBottom="2dp"
-            android:singleLine="false"
-            android:text="SpiderMan 332"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/group_num"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/group_type"
-            android:gravity="center|center_vertical"
-            android:paddingRight="10dip"
-            android:paddingBottom="2dp"
-            android:singleLine="true"
-            android:text="
-"
-            android:textColor="@color/grey2"
-            android:textSize="12sp"
-            app:fontFamily="@font/aref_ruqaa" />
-
-        <LinearLayout
+            android:id="@+id/today_movie_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="-10dp"
-            android:paddingRight="10dp"
-            android:orientation="horizontal">
+            android:text="TextView"
+            android:visibility="invisible" />
 
-            <RatingBar
-                style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:numStars="1"
-                android:progressTint="@color/colorPrimaryDark"
-                android:rating="1" />
+        <ImageView
+            android:id="@+id/imageLayout"
+            android:layout_width="match_parent"
+            android:layout_height="203dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/imageoverlay" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="247dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="164dp"
+
+            android:layout_marginRight="164dp"
+            android:popupBackground="@color/colorPrimary"
+            android:spinnerMode="dialog"
+            android:textColor="#fff" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="131dp"
+            android:layout_alignTop="@+id/imageLayout"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="94dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="33dp"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/movieTodayRate"
+                android:id="@+id/group_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:paddingTop="1.5dp"
-                android:text="8.7"
+                android:paddingRight="10dip"
+                android:paddingBottom="2dp"
+                android:singleLine="false"
                 android:textColor="@color/white"
-                android:textSize="10dp" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/group_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/group_type"
+                android:gravity="center|center_vertical"
+                android:paddingRight="10dip"
+                android:paddingBottom="2dp"
+                android:singleLine="true"
+                android:text="
+"
+                android:textColor="@color/grey2"
+                android:textSize="12sp"
+                app:fontFamily="@font/aref_ruqaa" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="-10dp"
+                android:orientation="horizontal"
+                android:paddingRight="10dp">
+
+                <RatingBar
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:numStars="1"
+                    android:progressTint="@color/colorPrimaryDark"
+                    android:rating="1" />
+
+                <TextView
+                    android:id="@+id/movieTodayRate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="1.5dp"
+                    android:text="8.7"
+                    android:textColor="@color/white"
+                    android:textSize="10dp" />
+            </LinearLayout>
+
         </LinearLayout>
 
-    </LinearLayout>
-
-</RelativeLayout>
+    </RelativeLayout>
     <!-- A RecyclerView to display horizontal list -->
 
     <androidx.recyclerview.widget.RecyclerView
@@ -143,6 +153,7 @@ android:layout_height="fill_parent"
         android:background="@color/colorPrimary"/>
 
     <TextView
+        android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
@@ -151,20 +162,64 @@ android:layout_height="fill_parent"
         android:textColor="@color/colorPrimary"
         app:fontFamily="@font/cairo_bold" />
 
-    <!-- A RecyclerView to display list -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
+    <FrameLayout
         android:background="@color/colorPrimary"
-        android:minHeight="840dp"
-        android:paddingBottom="20dp"
-        android:scrollbars="vertical" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <io.supercharge.shimmerlayout.ShimmerLayout
+            android:id="@+id/shimmer_layout"
+            app:shimmer_animation_duration="1200"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/movie_item_placeholder"/>
+                <include layout="@layout/movie_item_placeholder"/>
+                <include layout="@layout/movie_item_placeholder"/>
+                <include layout="@layout/movie_item_placeholder"/>
+                <include layout="@layout/movie_item_placeholder"/>
+                <include layout="@layout/movie_item_placeholder"/>
+                <include layout="@layout/movie_item_placeholder"/>
+            </LinearLayout>
+        </io.supercharge.shimmerlayout.ShimmerLayout>
+
+        <!-- A RecyclerView to display list -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:minHeight="840dp"
+            android:paddingBottom="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            android:scrollbars="vertical"/>
+    </FrameLayout>
 
 
 
 </LinearLayout>
 </ScrollView>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:id="@+id/view_ab"
+        android:layout_above="@+id/bnve"
+        android:background="@color/colorPrimaryDark"></View>
+    <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+        android:id="@+id/bnve"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
+        app:menu="@menu/bottomnavigationmenu" />
 
 </RelativeLayout>

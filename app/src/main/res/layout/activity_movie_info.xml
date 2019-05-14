@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_above="@+id/view_ab1"
     android:background="@color/colorPrimary"
+    android:id="@+id/scrollView"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,6 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MovieInfoActivity">
+
+
 
         <FrameLayout
             android:id="@+id/header"
@@ -59,25 +67,57 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/header" />
 
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            app:tabIndicatorColor="@color/colorPrimaryDark"
+            android:layout_height="wrap_content"
+            app:tabTextColor="@color/white"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintTop_toBottomOf="@+id/release">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
+                android:text="INFO" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CAST" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CREW" />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="REVIEWS" />
+        </com.google.android.material.tabs.TabLayout>
+
         <TextView
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="Description"
+            android:layout_marginTop="10dp"
             android:textColor="@color/grey2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/release" />
+            app:layout_constraintTop_toBottomOf="@+id/tabs" />
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/castRecyclerView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cast" />
+            app:layout_constraintTop_toBottomOf="@+id/tabs" />
 
         <TextView
             android:id="@+id/cast"
@@ -85,17 +125,21 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:visibility="gone"
+
             android:text="Cast"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="16dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/description" />
+            app:layout_constraintTop_toBottomOf="@+id/tabs" />
 
         <TextView
             android:id="@+id/crew"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
+
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="Crew"
@@ -103,11 +147,21 @@
             android:textSize="16dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/castRecyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/tabs" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reviewsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
 
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/crew" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/crewRecyclerView"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:orientation="horizontal"
@@ -119,19 +173,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:text="Release date"
+            android:textColor="@color/grey2"
+            android:textSize="10sp"
+            android:textStyle="italic"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title" />
 
         <TextView
             android:id="@+id/genres"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:text="Genres"
+            android:textColor="@color/grey2"
+            android:textSize="10sp"
+            android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="@+id/release"
+            app:layout_constraintEnd_toStartOf="@+id/runtime"
             app:layout_constraintStart_toEndOf="@+id/release"
             app:layout_constraintTop_toTopOf="@+id/release" />
 
@@ -139,14 +201,14 @@
             android:id="@+id/relativeLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/description"
+            app:layout_constraintBottom_toTopOf="@+id/tabs"
             app:layout_constraintEnd_toEndOf="parent">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@drawable/ic_star_black_24dp" />
+                android:src="@drawable/ic_star_yellow_48dp" />
 
             <TextView
                 android:id="@+id/rating"
@@ -167,8 +229,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="Runtime"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/grey2"
 
+            android:textSize="12sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/genres"
             app:layout_constraintEnd_toStartOf="@+id/relativeLayout"
             app:layout_constraintTop_toTopOf="@+id/genres" />
@@ -184,7 +248,7 @@
             android:textSize="16dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/crewRecyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/description" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/relatedMoviesRecycler"
@@ -195,4 +259,22 @@
             app:layout_constraintTop_toBottomOf="@id/relatedMovies" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </ScrollView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:id="@+id/view_ab1"
+        android:layout_above="@+id/bnve"
+        android:background="@color/colorPrimaryDark"
+        ></View>
+    <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+        android:id="@+id/bnve"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
+        app:menu="@menu/bottomnavigationmenu" />
+</RelativeLayout>
