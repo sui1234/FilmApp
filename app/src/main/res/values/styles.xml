@@ -15,4 +15,5 @@
         <item name="android:textColor">#fff</item>
         <item name="android:color">#ffff</item>
     </style>
+
 </resources>

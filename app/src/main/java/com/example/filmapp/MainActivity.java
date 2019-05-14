@@ -1,13 +1,8 @@
 package com.example.filmapp;
 
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.graphics.Movie;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,11 +21,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-
 import com.example.filmapp.BottomNavMenu.BottomNavigationViewHelper;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -127,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onNothingSelected(AdapterView<?> parent) {
                     }
                 });
+
+
 
 
 

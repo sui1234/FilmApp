@@ -14,6 +14,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".People.people_view"></activity>
         <activity android:name=".MovieInfoActivity" />
+        <activity android:name=".SearchActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

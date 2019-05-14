@@ -6,6 +6,7 @@ import android.view.MenuItem;
 
 import com.example.filmapp.MainActivity;
 import com.example.filmapp.R;
+import com.example.filmapp.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
@@ -29,7 +30,7 @@ public class BottomNavigationViewHelper {
                         context.startActivity(intent1);
                         break;
                     case R.id.nav_serarch:
-                            Intent intent2 = new Intent(context, MainActivity.class);
+                            Intent intent2 = new Intent(context, SearchActivity.class);
                             context.startActivity(intent2);
                             break;
                     case R.id.nav_fav:

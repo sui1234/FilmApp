@@ -5,4 +5,5 @@
         <item>Top listan</item>
         <item>På bio nu</item>
     </string-array>
+    <string name="search">Sök</string>
 </resources>
