@@ -182,13 +182,8 @@ public class MainActivity extends AppCompatActivity {
                                     movileList2.add(new MovieItem(title, fullPosterUrl, release, description,id));
 
                                 }
-
-
-
-
                             }
                             popularMoiveAdapter = new PopularMoiveAdapter(MainActivity.this, movieList);
-
                             recyclerView.setAdapter(popularMoiveAdapter);
                             circleMoiveAdapter = new CirclearMovieAdapter(MainActivity.this, movileList2);
                             mRecycleViewRound.setAdapter(circleMoiveAdapter);
@@ -266,4 +261,10 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationViewHelper.enableNavigation(MainActivity.this, bottomNavigationViewEx);
     }
 
+
+    public void openMovieInfo(View v) {
+        Intent intent = new Intent(this, MovieInfoActivity.class);
+        startActivity(intent);
+        Log.d(TAG, "openMovieInfo: Function Called");
+    }
 }

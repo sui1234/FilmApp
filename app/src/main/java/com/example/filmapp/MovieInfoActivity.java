@@ -2,10 +2,12 @@ package com.example.filmapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -20,8 +22,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.filmapp.BottomNavMenu.BottomNavigationViewHelper;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -30,6 +35,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -70,7 +76,9 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
     private static final String TAG = "MovieInfoActivity";
     public static final String EXTRA_MESSAGE = "com.example.filmapp.MovieInfoActivity";
 
-
+    public static final String SHARED_PREFS = "sharedPrefs";
+    public static final String FAVORITE_ARRAY_LIST = "favorites";
+    ArrayList<String> movieIDArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +86,9 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_movie_info);
+
+        
+        loadFavoritesFromPreferences();
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -104,6 +115,8 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         reviewsList = new ArrayList<CreditPerson>();
         relatedMovieList = new ArrayList<>();
         lokale = Locale.getDefault().getLanguage()+"-"+Locale.getDefault().getCountry();
+
+
 
         castRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         crewRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -171,7 +184,6 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
                     crewRecyclerView.setVisibility(View.GONE);
                     relatedMovieRecyclerView.setVisibility(View.VISIBLE);
                     reviewsRecycle.setVisibility(View.GONE);
-
                     relatedMovieList.clear();
                     parseRelatedMovies();
 
@@ -199,7 +211,6 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
                     relatedMovieRecyclerView.setVisibility(View.GONE);
                     mRelatedMovie.setVisibility(View.GONE);
                     reviewsRecycle.setVisibility(View.GONE);
-
                     crewList.clear();
                     parseCrewJson();
                 }
@@ -514,5 +525,47 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         BottomNavigationViewHelper.setypBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(MovieInfoActivity.this, bottomNavigationViewEx);
 
+    }
+
+
+
+    public void saveFavoriteToPreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(movieIDArrayList);
+        editor.putString(FAVORITE_ARRAY_LIST, json);
+        editor.apply();
+    }
+
+    public void loadFavoritesFromPreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(FAVORITE_ARRAY_LIST, null);
+        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+        movieIDArrayList = gson.fromJson(json, type);
+
+        if (movieIDArrayList == null) {
+            movieIDArrayList = new ArrayList<>();
+        }
+    }
+
+    public void saveToFavorites(View v) {
+        // OM filmen finns i listan så ta bort den ANNARS lägg till den
+        if (movieIDArrayList.contains(movieId)) {
+            movieIDArrayList.remove(movieId);
+            Log.d("!!!", "saveToFavorites: Removed " + movieId);
+        } else {
+            movieIDArrayList.add(movieId);
+            Log.d("!!!", "saveToFavorites: Added " + movieId);
+            saveFavoriteToPreferences();
+
+            Toast.makeText(this, "movie id is: " + movieId, Toast.LENGTH_SHORT).show();
+
+            for (int i = 0; i < movieIDArrayList.size(); i++) {
+                String id = movieIDArrayList.get(i);
+                Log.d("!!!", "saveToFavorites: " + id);
+            }
+        }
     }
 }

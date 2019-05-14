@@ -65,7 +65,7 @@ public class PopularMoiveAdapter extends RecyclerView.Adapter<PopularMoiveAdapte
         return movieList.size();
     }
 
-    public class PopularMovieViewHolder extends RecyclerView.ViewHolder {
+    public class PopularMovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView moviePoster;
         public TextView movieTitle;
@@ -83,6 +83,11 @@ public class PopularMoiveAdapter extends RecyclerView.Adapter<PopularMoiveAdapte
             movieName = itemView.findViewById(R.id.movieName);
 
 
+        }
+
+        @Override
+        public void onClick(View v) {
+            //klick på hela viewn
         }
     }
 }

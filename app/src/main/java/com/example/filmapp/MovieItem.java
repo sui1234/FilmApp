@@ -26,7 +26,9 @@ public class MovieItem {
     public int getId() {
         return id;
     }
+
     public String getId2() { return id2; }
+
     public String getTitle() {
         return title;
     }
