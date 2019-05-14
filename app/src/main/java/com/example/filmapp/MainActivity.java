@@ -97,10 +97,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-
-        //parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE&page=1");
-
-
         searchImage = findViewById(R.id.search_image);
         searchImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,23 +107,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+        parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE&page=1");
+
+
         Bundle bundle = getIntent().getExtras();
-        if(bundle != null){
+        if (bundle != null) {
+
+
             String url = bundle.getString("url");
-            Log.d("Sui get intent","url "+url);
-
-            movileList2.clear();
-            movieList.clear();
-
+            Log.d("Sui get intent", "url " + url);
             parseJson(url);
-
-        }else{
-            parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE&page=1");
         }
-
-
-
-
 
 
     }
@@ -142,48 +134,66 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = null;
+                            JSONArray jsonArray;
                             jsonArray = response.getJSONArray("results");
 
-                            Log.d("Sui result","length" + jsonArray.length());
+                            Log.d("Sui result", "length" + jsonArray.length());
                             movieList.clear();
                             movileList2.clear();
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject result = jsonArray.getJSONObject(i);
 
-                                String title = result.getString("original_title");
-                                String release = result.getString("release_date");
-                                String description = result.getString("overview");
-                                String poster = result.getString("poster_path");
-                                String id = result.getString("id");
+                                Log.d("Sui result", "jsonArray" + result);
 
-                                String fullPosterUrl = "http://image.tmdb.org/t/p/w500" + poster;
-                                if (i == 0) {
+                                try {
+                                    String title = result.getString("original_title");
+                                    String release = result.getString("release_date");
+                                    String description = result.getString("overview");
+                                    String poster = result.getString("poster_path");
+                                    String id = result.getString("id");
 
-                                    mTodaysMovieTitle = findViewById(R.id.group_type);
-                                    mTodaysMovieImage = findViewById(R.id.todayMoviewImage);
-                                    mTodaysMovieRate = findViewById(R.id.movieTodayRate);
+                                    Log.d("Sui", "title" + title + release + id);
+                                    String fullPosterUrl = "http://image.tmdb.org/t/p/w500" + poster;
 
-                                    mTodaysMovieRate.setText(result.getString("vote_average"));
-                                    JSONArray gernes_array = result.getJSONArray("genre_ids");
-                                    mTodaysMovieTitle.setText(result.getString("original_title"));
+                                    Log.d("Sui", "fullposter" + fullPosterUrl);
+                                    if (i == 0) {
+
+                                        mTodaysMovieTitle = findViewById(R.id.group_type);
+                                        mTodaysMovieImage = findViewById(R.id.todayMoviewImage);
+                                        mTodaysMovieRate = findViewById(R.id.movieTodayRate);
+
+                                        Log.d("Sui first movie", "is " + mTodaysMovieTitle);
+
+                                        mTodaysMovieRate.setText(result.getString("vote_average"));
+                                        JSONArray gernes_array = result.getJSONArray("genre_ids");
+                                        mTodaysMovieTitle.setText(result.getString("original_title"));
 
 
-                                    getGenerParse(gernes_array);
+                                        getGenerParse(gernes_array);
 
-                                    Glide.with(getApplication()).load(fullPosterUrl).centerCrop().into(mTodaysMovieImage);
+                                        try {
+                                            Glide.with(getApplication()).load(fullPosterUrl).centerCrop().into(mTodaysMovieImage);
+                                        } catch (Exception E) {
+                                            continue;
+                                        }
+                                    }
+                                    if (description.length() > 120) {
+                                        description = description.substring(0, 120) + "...";
+                                    }
 
-                                }
-                                if (description.length() > 120) {
-                                    description = description.substring(0, 120) + "...";
-                                }
+                                    if (i < 10) {
+                                        movieList.add(new MovieItem(title, fullPosterUrl, release, description, id));
+                                        Log.d("Suimovielist", "is < 10" + movieList);
 
-                                if (i < 10) {
-                                    movieList.add(new MovieItem(title, fullPosterUrl, release, description, id));
 
-                                } else {
-                                    movileList2.add(new MovieItem(title, fullPosterUrl, release, description, id));
+                                    } else {
+                                        movileList2.add(new MovieItem(title, fullPosterUrl, release, description, id));
+                                        Log.d("Sui get movielist", "is >=10" + movileList2);
 
+                                    }
+
+                                } catch (Exception E) {
+                                    continue;
                                 }
 
 
@@ -191,8 +201,11 @@ public class MainActivity extends AppCompatActivity {
                             popularMoiveAdapter = new PopularMoiveAdapter(MainActivity.this, movieList);
 
                             recyclerView.setAdapter(popularMoiveAdapter);
+                            Log.d("Suirecyclerview", "successeful" + movieList);
+
                             circleMoiveAdapter = new CirclearMovieAdapter(MainActivity.this, movileList2);
                             mRecycleViewRound.setAdapter(circleMoiveAdapter);
+                            Log.d("Suimrecycle", "successeful" + movileList2);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -200,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
                         movieList.remove(0);
                         popularMoiveAdapter.notifyDataSetChanged();
                         circleMoiveAdapter.notifyDataSetChanged();
+                        Log.d("Sui notify", "added");
                         new android.os.Handler().postDelayed(
                                 new Runnable() {
                                     public void run() {
@@ -211,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
                     private void getGenerParse(final JSONArray gernes_array) {
                         jsonGerenes = gernes_array;
+                        Log.d("Suitest", "get Gener");
                         String url = "https://api.themoviedb.org/3/genre/movie/list?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE";
                         JsonObjectRequest req_grn = new JsonObjectRequest(Request.Method.GET, url, null,
                                 new Response.Listener<JSONObject>() {
@@ -256,9 +271,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         requestQueue.add(request);
+        Log.d("Suiadd ", "request");
 
     }
-
 
 
 }
