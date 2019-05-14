@@ -1,6 +1,7 @@
 package com.example.filmapp;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +11,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
-    private List<MovieDetails> myMovieDetails;
+    private ArrayList<String> myMovieDetails;
     private Context context;
 
-    public MovieAdapter(List<MovieDetails> movieDetails, Context context) {
+    public MovieAdapter(ArrayList<String> movieDetails, Context context) {
         this.myMovieDetails = movieDetails;
         this.context = context;
     }
@@ -26,18 +28,25 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     @Override
     public MovieAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.activity_movie_info, viewGroup, false);
+                .inflate(R.layout.movie_item_layout, viewGroup, false);
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MovieAdapter.ViewHolder viewHolder, int i) {
-        MovieDetails movieDetails = myMovieDetails.get(i);
+        //MovieDetails movieDetails = myMovieDetails.get(i);
 
         //viewHolder.the_poster.setImageURI(movieDetails.getThe_poster());
-        viewHolder.the_title.setText((CharSequence) movieDetails.getThe_title());
-        viewHolder.the_release_date.setText((CharSequence) movieDetails.getThe_release_date());
-        viewHolder.the_description.setText((CharSequence) movieDetails.getThe_description());
+
+        Log.d("===", "onBindViewHolder: " + viewHolder.the_title);
+        try {
+            viewHolder.the_title.setText(myMovieDetails.get(i));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        // Behöver konvertera film id't till all info den innehåller och sen skriva ut
+        viewHolder.the_release_date.setText(myMovieDetails.get(i));
+        viewHolder.the_description.setText(myMovieDetails.get(i));
     }
 
     @Override
@@ -54,10 +63,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            the_poster = itemView.findViewById(R.id.poster);
-            the_title = itemView.findViewById(R.id.title);
-            the_release_date = itemView.findViewById(R.id.release);
-            the_description = itemView.findViewById(R.id.description);
+            the_poster = itemView.findViewById(R.id.movie_poster);
+            the_title = itemView.findViewById(R.id.movie_title);
+            the_release_date = itemView.findViewById(R.id.movie_release);
+            the_description = itemView.findViewById(R.id.movie_description);
         }
     }
 }

@@ -188,13 +188,8 @@ public class MainActivity extends AppCompatActivity {
                                     movileList2.add(new MovieItem(title, fullPosterUrl, release, description,id));
 
                                 }
-
-
-
-
                             }
                             popularMoiveAdapter = new PopularMoiveAdapter(MainActivity.this, movieList);
-
                             recyclerView.setAdapter(popularMoiveAdapter);
                             circleMoiveAdapter = new CirclearMovieAdapter(MainActivity.this, movileList2);
                             mRecycleViewRound.setAdapter(circleMoiveAdapter);

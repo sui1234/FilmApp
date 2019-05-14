@@ -22,6 +22,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.filmapp.BottomNavMenu.BottomNavigationViewHelper;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.google.gson.Gson;
@@ -86,11 +87,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         getSupportActionBar().hide();
         setContentView(R.layout.activity_movie_info);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        //SharedPreferences.Editor editor = settings.edit();
-        editor.clear();
-        editor.commit();
+        
         loadFavoritesFromPreferences();
 
         Bundle extras = getIntent().getExtras();
@@ -187,7 +184,6 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
                     crewRecyclerView.setVisibility(View.GONE);
                     relatedMovieRecyclerView.setVisibility(View.VISIBLE);
                     reviewsRecycle.setVisibility(View.GONE);
-
                     relatedMovieList.clear();
                     parseRelatedMovies();
 
@@ -215,7 +211,6 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
                     relatedMovieRecyclerView.setVisibility(View.GONE);
                     mRelatedMovie.setVisibility(View.GONE);
                     reviewsRecycle.setVisibility(View.GONE);
-
                     crewList.clear();
                     parseCrewJson();
                 }
