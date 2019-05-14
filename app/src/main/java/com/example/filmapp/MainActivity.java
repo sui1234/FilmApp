@@ -1,14 +1,14 @@
 package com.example.filmapp;
 
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Movie;
+
 import android.os.Bundle;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -25,15 +26,23 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+
 import com.example.filmapp.BottomNavMenu.BottomNavigationViewHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Locale;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import io.supercharge.shimmerlayout.ShimmerLayout;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -45,9 +54,14 @@ public class MainActivity extends AppCompatActivity {
     private RequestQueue requestQueue,requestQueue2;
     private TextView mTodaysMovieTitle, mTodaysMovieRate,mText,mTodayMovieId;
     private ImageView mTodaysMovieImage;
+
     private  JSONArray jsonGerenes;
     private String gereners,lokale;
+
     private Spinner mDropDown;
+    ShimmerLayout shimmerLayout;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,8 +84,12 @@ public class MainActivity extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(this);
         requestQueue2 = Volley.newRequestQueue(this);
         mText = findViewById(R.id.group_num);
+
+        shimmerLayout = findViewById(R.id.shimmer_layout);
+
         lokale = Locale.getDefault().getLanguage()+"-"+Locale.getDefault().getCountry();
         today_rel = (RelativeLayout)findViewById(R.id.today_relative);
+
         ArrayAdapter<String> dropdownAdapter = new ArrayAdapter<String> (MainActivity.this,
                 R.layout.dropdown_item,getResources().getStringArray(R.array.dropdownArray));
         dropdownAdapter.setDropDownViewResource(R.layout.dropdown_item);
@@ -111,13 +129,15 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
+
         parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language="+lokale+"&page=1");
         setuoBottomnavView();
         overridePendingTransition(0, 0);
 
     }
     private void parseJson(String url) {
-        final ProgressDialog dialog = ProgressDialog.show(this, null, "Filmer laddas....");
+        //final ProgressDialog dialog = ProgressDialog.show(this, null, "Filmer laddas....");
+        shimmerLayout.startShimmerAnimation();
 
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -185,14 +205,17 @@ public class MainActivity extends AppCompatActivity {
                         movieList.remove(0);
                         popularMoiveAdapter.notifyDataSetChanged();
                         circleMoiveAdapter.notifyDataSetChanged();
-                        new android.os.Handler().postDelayed(
-                                new Runnable() {
-                                    public void run() {
-                                        dialog.dismiss();
-                                    }
-                                },
-                                1000);
+//                        new android.os.Handler().postDelayed(
+//                                new Runnable() {
+//                                    public void run() {
+//                                        dialog.dismiss();
+//                                    }
+//                                },
+//                                1000);
+                        shimmerLayout.stopShimmerAnimation();
+                        shimmerLayout.setVisibility(View.GONE);
                     }
+
 
                     private void getGenerParse(final JSONArray gernes_array) {
                         jsonGerenes = gernes_array;
