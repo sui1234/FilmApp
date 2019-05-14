@@ -69,7 +69,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
 
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String FAVORITE_ARRAY_LIST = "favorites";
-    ArrayList<MovieID> movieIDArrayList;
+    ArrayList<String> movieIDArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +78,11 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         getSupportActionBar().hide();
         setContentView(R.layout.activity_movie_info);
 
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        //SharedPreferences.Editor editor = settings.edit();
+        editor.clear();
+        editor.commit();
         loadFavoritesFromPreferences();
 
         Bundle extras = getIntent().getExtras();
@@ -375,7 +380,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString(FAVORITE_ARRAY_LIST, null);
-        Type type = new TypeToken<ArrayList<MovieID>>() {}.getType();
+        Type type = new TypeToken<ArrayList<String>>() {}.getType();
         movieIDArrayList = gson.fromJson(json, type);
 
         if (movieIDArrayList == null) {
@@ -387,20 +392,18 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         // OM filmen finns i listan så ta bort den ANNARS lägg till den
         if (movieIDArrayList.contains(movieId)) {
             movieIDArrayList.remove(movieId);
+            Log.d("!!!", "saveToFavorites: Removed " + movieId);
         } else {
-            MovieID movieID = new MovieID(movieId);
-            movieIDArrayList.add(movieID);
+            movieIDArrayList.add(movieId);
+            Log.d("!!!", "saveToFavorites: Added " + movieId);
             saveFavoriteToPreferences();
 
             Toast.makeText(this, "movie id is: " + movieId, Toast.LENGTH_SHORT).show();
+
             for (int i = 0; i < movieIDArrayList.size(); i++) {
-                Log.d("!!!", "saveToFavorites: " + movieIDArrayList.get(i));
+                String id = movieIDArrayList.get(i);
+                Log.d("!!!", "saveToFavorites: " + id);
             }
         }
-    }
-
-    @Override
-    public String toString() {
-        return movieId;
     }
 }

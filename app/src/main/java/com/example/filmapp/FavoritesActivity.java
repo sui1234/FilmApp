@@ -21,8 +21,8 @@ public class FavoritesActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        // Ska ta sharedpreferences?
-        movieAdapter = new MovieAdapter(, this);
+        // Ska ta sharedpreferences / putExtra
+        //movieAdapter = new MovieAdapter(, this);
         recyclerView.setAdapter(movieAdapter);
 
 
