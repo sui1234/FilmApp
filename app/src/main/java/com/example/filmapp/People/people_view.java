@@ -17,10 +17,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.example.filmapp.BottomNavMenu.BottomNavigationViewHelper;
+import com.example.filmapp.MainActivity;
 import com.example.filmapp.MovieInfoActivity;
 import com.example.filmapp.MovieItem;
 import com.example.filmapp.R;
 import com.example.filmapp.RelatedMovieAdapter;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,6 +63,9 @@ public class people_view extends AppCompatActivity {
             people_id = String.valueOf(extras.getString("people_id"));
         }
         parseRelatedMovies(people_id);
+        setuoBottomnavView();
+        overridePendingTransition(0, 0);
+
     }
     private void parseRelatedMovies(String people_id) {
         String url = "https://api.themoviedb.org/3/person/"+people_id+"?api_key=7005ceb3ddacaaf788e2327647f0fa57";
@@ -114,7 +120,7 @@ public class people_view extends AppCompatActivity {
                                 String poster = result.getString("poster_path");
                                 int id = result.getInt("id");
 
-                                String fullPosterUrl = "http://image.tmdb.org/t/p/w185" + poster;
+                                String fullPosterUrl = "http://image.tmdb.org/t/p/w500" + poster;
 
                                 relatedMovieList.add(new MovieItem(title, fullPosterUrl, id));
                             }
@@ -134,6 +140,11 @@ public class people_view extends AppCompatActivity {
             }
         });
         requestQueue.add(request);
+    }
+    private void setuoBottomnavView(){
+        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bnve);
+        BottomNavigationViewHelper.setypBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(people_view.this, bottomNavigationViewEx);
     }
 
 }

@@ -1,8 +1,11 @@
 package com.example.filmapp;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Movie;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.android.volley.Request;
@@ -21,22 +25,28 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.example.filmapp.BottomNavMenu.BottomNavigationViewHelper;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private RecyclerView recyclerView, mRecycleViewRound;
     private PopularMoiveAdapter popularMoiveAdapter;
+    private RelativeLayout today_rel;
     private CirclearMovieAdapter circleMoiveAdapter;
     private ArrayList<MovieItem> movieList, movileList2;
     private RequestQueue requestQueue,requestQueue2;
-    private TextView mTodaysMovieTitle, mTodaysMovieRate,mText;
+    private TextView mTodaysMovieTitle, mTodaysMovieRate,mText,mTodayMovieId;
     private ImageView mTodaysMovieImage;
     private  JSONArray jsonGerenes;
-    private String gereners;
+    private String gereners,lokale;
     private Spinner mDropDown;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,17 +63,28 @@ public class MainActivity extends AppCompatActivity {
         mRecycleViewRound.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false));
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
+        mTodayMovieId = findViewById(R.id.today_movie_id);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         movieList = new ArrayList<>();
         movileList2 = new ArrayList<>();
         requestQueue = Volley.newRequestQueue(this);
         requestQueue2 = Volley.newRequestQueue(this);
         mText = findViewById(R.id.group_num);
-
-
+        lokale = Locale.getDefault().getLanguage()+"-"+Locale.getDefault().getCountry();
+        today_rel = (RelativeLayout)findViewById(R.id.today_relative);
         ArrayAdapter<String> dropdownAdapter = new ArrayAdapter<String> (MainActivity.this,
                 R.layout.dropdown_item,getResources().getStringArray(R.array.dropdownArray));
         dropdownAdapter.setDropDownViewResource(R.layout.dropdown_item);
+        today_rel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (v.getContext(), MovieInfoActivity.class);
+                Bundle mBundle = new Bundle();
+                mBundle.putString("movie_id", String.valueOf(mTodayMovieId.getText()));
+                intent.putExtras(mBundle);
+                startActivity(intent);
+            }
+        });
         mDropDown.setAdapter(dropdownAdapter);
         mDropDown.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
@@ -73,15 +94,15 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "onItemSelected: "+item.toString());
                         if (item.toString().equals("På bio nu")){
 
-                            parseJson("https://api.themoviedb.org/3/movie/now_playing?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE&page=1");
+                            parseJson("https://api.themoviedb.org/3/movie/now_playing?api_key=7005ceb3ddacaaf788e2327647f0fa57&language="+lokale+"&page=1");
 
                         }
                         if (item.toString().equals("Top listan")){
-                            parseJson("https://api.themoviedb.org/3/movie/top_rated?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE&page=1\n");
+                            parseJson("https://api.themoviedb.org/3/movie/top_rated?api_key=7005ceb3ddacaaf788e2327647f0fa57&language="+lokale+"&page=1\n");
 
                         }
                         if (item.toString().equals("Kommande filmer")){
-                            parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE&page=1");
+                            parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language="+lokale+"page=1");
 
                         }
                     }
@@ -90,12 +111,9 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
-    parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE&page=1");
-
-
-
-
-
+        parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language="+lokale+"&page=1");
+        setuoBottomnavView();
+        overridePendingTransition(0, 0);
 
     }
     private void parseJson(String url) {
@@ -131,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                                     mTodaysMovieRate.setText(result.getString("vote_average"));
                                     JSONArray gernes_array = result.getJSONArray("genre_ids");
                                     mTodaysMovieTitle.setText(result.getString("original_title"));
-
+                                    mTodayMovieId.setText(result.getString("id"));
 
                                         getGenerParse(gernes_array);
 
@@ -178,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
 
                     private void getGenerParse(final JSONArray gernes_array) {
                         jsonGerenes = gernes_array;
-                        String url = "https://api.themoviedb.org/3/genre/movie/list?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=sv-SE";
+                        String url = "https://api.themoviedb.org/3/genre/movie/list?api_key=7005ceb3ddacaaf788e2327647f0fa57&language="+lokale+"";
                         JsonObjectRequest req_grn = new JsonObjectRequest(Request.Method.GET, url, null,
                                 new Response.Listener<JSONObject>() {
                                     @Override
@@ -225,6 +243,10 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(request);
 
     }
-
+    private void setuoBottomnavView(){
+        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bnve);
+        BottomNavigationViewHelper.setypBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(MainActivity.this, bottomNavigationViewEx);
+    }
 
 }
