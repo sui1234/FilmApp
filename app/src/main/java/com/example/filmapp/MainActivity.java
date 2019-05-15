@@ -262,9 +262,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /*
     public void openMovieInfo(View v) {
         Intent intent = new Intent(this, MovieInfoActivity.class);
         startActivity(intent);
         Log.d(TAG, "openMovieInfo: Function Called");
     }
+    */
 }

@@ -11,15 +11,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
-    private ArrayList<String> myMovieDetails;
+    private ArrayList<MovieDetails> myMovieDetails;
     private Context context;
 
-    public MovieAdapter(ArrayList<String> movieDetails, Context context) {
+    public MovieAdapter(ArrayList<MovieDetails> movieDetails, Context context) {
         this.myMovieDetails = movieDetails;
         this.context = context;
     }
@@ -40,13 +42,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
         Log.d("===", "onBindViewHolder: " + viewHolder.the_title);
         try {
-            viewHolder.the_title.setText(myMovieDetails.get(i));
+            viewHolder.the_title.setText(myMovieDetails.get(i).getThe_title());
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        // Behöver konvertera film id't till all info den innehåller och sen skriva ut
-        viewHolder.the_release_date.setText(myMovieDetails.get(i));
-        viewHolder.the_description.setText(myMovieDetails.get(i));
+        viewHolder.the_release_date.setText(myMovieDetails.get(i).getThe_release_date());
+        viewHolder.the_description.setText(myMovieDetails.get(i).getThe_description());
     }
 
     @Override
