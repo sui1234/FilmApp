@@ -198,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
                         movieList.remove(0);
                         popularMoiveAdapter.notifyDataSetChanged();
                         circleMoiveAdapter.notifyDataSetChanged();
+
                         new android.os.Handler().postDelayed(
                                 new Runnable() {
                                     public void run() {

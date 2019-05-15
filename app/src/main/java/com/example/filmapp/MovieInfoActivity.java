@@ -45,6 +45,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import io.supercharge.shimmerlayout.ShimmerLayout;
+
 public class MovieInfoActivity extends AppCompatActivity implements RelatedMovieAdapter.OnMovieListener {
 
     ImageView moviePoster;
@@ -62,6 +64,8 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
     TabLayout mTabs;
     String movieId,lokale;
     ScrollView scrollView;
+
+    ShimmerLayout shimmerLayout;
 
     RequestQueue requestQueue;
 
@@ -110,6 +114,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         mTabs = findViewById(R.id.tabs);
         youTubePlayerView = findViewById(R.id.youtube_player_view);
         mRelatedMovie = findViewById(R.id.relatedMovies);
+        shimmerLayout = findViewById(R.id.shimmer_layout);
         castList = new ArrayList<>();
         crewList = new ArrayList<>();
         reviewsList = new ArrayList<CreditPerson>();
@@ -187,6 +192,9 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
                     relatedMovieList.clear();
                     parseRelatedMovies();
 
+
+                    shimmerLayout.setVisibility(View.VISIBLE);
+                    shimmerLayout.startShimmerAnimation();
 
                 }
                 if (tabNum == 1){
@@ -459,6 +467,15 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
+                        new android.os.Handler().postDelayed(
+                                new Runnable() {
+                                    public void run() {
+                                        shimmerLayout.stopShimmerAnimation();
+                                        shimmerLayout.setVisibility(View.GONE);
+                                    }
+                                },
+                                6000);
 
                     }
                 }, new Response.ErrorListener() {
