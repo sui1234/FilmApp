@@ -432,6 +432,8 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
 
     private void parseRelatedMovies() {
         String url = "https://api.themoviedb.org/3/movie/" + movieId + "/similar?api_key=7005ceb3ddacaaf788e2327647f0fa57&language="+lokale+"&page=1";
+        // TODO: 2019-05-14 Remove log in Movieactivity
+        Log.d("MovieUrl", url);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
