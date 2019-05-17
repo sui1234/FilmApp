@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.MenuItem;
 
+import com.example.filmapp.Favoriter.favoriter;
+import com.example.filmapp.FavoritesActivity;
 import com.example.filmapp.FavoritesActivity;
 import com.example.filmapp.MainActivity;
 import com.example.filmapp.R;
@@ -39,7 +41,9 @@ public class BottomNavigationViewHelper {
                             context.startActivity(intent2);
                             break;
                     case R.id.nav_fav:
-                        Intent intent3 = new Intent(context, FavoritesActivity.class);
+                        Intent intent3 = new Intent(context, favoriter.class);
+                        //Intent intent3 = new Intent(context, FavoritesActivity.class);
+                        //Intent intent3 = new Intent(context, FavoritesActivity.class);
                         context.startActivity(intent3);
                         break;
                 }

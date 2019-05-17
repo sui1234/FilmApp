@@ -37,6 +37,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
@@ -51,7 +52,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
     TextView movieTitleTv;
     TextView movieDescriptionTv;
     TextView movieReleaseDateTv;
-    TextView movieRuntimeTv;
+    TextView movieRuntimeTv,mAdd_to_fav,mRemoveFromFav;
     TextView movieRatingTv;
     TextView movieGenreTv, mRelatedMovie;
     RecyclerView castRecyclerView;
@@ -87,7 +88,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         getSupportActionBar().hide();
         setContentView(R.layout.activity_movie_info);
 
-        
+
         loadFavoritesFromPreferences();
 
         Bundle extras = getIntent().getExtras();
@@ -98,8 +99,10 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         moviePoster = findViewById(R.id.poster);
         movieTitleTv = findViewById(R.id.title);
         movieReleaseDateTv = findViewById(R.id.release);
+        mAdd_to_fav = findViewById(R.id.add_to_fav);
         movieRuntimeTv = findViewById(R.id.runtime);
         movieRatingTv = findViewById(R.id.rating);
+        mRemoveFromFav = findViewById(R.id.remove_to_fav);
         movieGenreTv = findViewById(R.id.genres);
         movieDescriptionTv = findViewById(R.id.description);
         castRecyclerView = findViewById(R.id.castRecyclerView);
@@ -139,40 +142,98 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
                 return false;
             }
         });
-        movieTitleTv.setOnClickListener(new View.OnClickListener() {
+        mRemoveFromFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = "https://api.themoviedb.org/3/authentication/token/new?api_key=80785c08251034a10a3c67beff397bde";
-                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
+                Log.d(TAG, "favo_movie: "+movieId);
+                JSONObject user = new JSONObject();
+                try {
+                    user.put("media_type", "movie");
 
-                                JSONObject jsonArray = response;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                                try {
-                                    String responseValue = response.getString("success");
-                                    if (responseValue.equals("true")) {
+                try {
+                    user.put("media_id",Integer.parseInt(movieId));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    user.put("favorite", false);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                                        Log.d(TAG, "onResponse: "+responseValue);
+                Log.d(TAG, "Fav_create_session_id: "+ user);
+                String url = "https://api.themoviedb.org/3/account/{account_id}/favorite?api_key=7005ceb3ddacaaf788e2327647f0fa57&session_id=0f864750f3c93c321b9972aa3fab11afdfed7226\n";
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, user, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, "onResponse: "+response);
+                        checkMovieStat();
 
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                Log.d(TAG, "onResponse:responsee "+response);
-
-
-                            }
-                        }, new Response.ErrorListener() {
+                    }
+                }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
+                        //handle errors
+                        Log.d(TAG, "onResponse++: "+error);
+
                     }
+
                 });
                 requestQueue.add(request);
             }
         });
+
+        mAdd_to_fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "favo_movie: "+movieId);
+                JSONObject user = new JSONObject();
+                try {
+                    user.put("media_type", "movie");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    user.put("media_id",Integer.parseInt(movieId));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    user.put("favorite", true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Log.d(TAG, "Fav_create_session_id: "+ user);
+                String url = "https://api.themoviedb.org/3/account/{account_id}/favorite?api_key=7005ceb3ddacaaf788e2327647f0fa57&session_id=0f864750f3c93c321b9972aa3fab11afdfed7226\n";
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, user, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, "onResponse: "+response);
+                        // Some code
+                        checkMovieStat();
+
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //handle errors
+                        Log.d(TAG, "onResponse++: "+error);
+
+                    }
+
+                });
+                requestQueue.add(request);
+            }
+        });
+
         mTabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -250,6 +311,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         parseMovieReview();
         setuoBottomnavView();
         overridePendingTransition(0, 0);
+        checkMovieStat();
 
     }
 
@@ -297,6 +359,38 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        requestQueue.add(request);
+    }
+    private void checkMovieStat() {
+        String url = "https://api.themoviedb.org/3/movie/"+movieId+"/account_states?api_key=7005ceb3ddacaaf788e2327647f0fa57&session_id=0f864750f3c93c321b9972aa3fab11afdfed7226";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Boolean dtatus = response.getBoolean("favorite");
+                            if(dtatus.equals(false)){
+                                Log.d(TAG, "onResponse: status är false"+response);
+                                mAdd_to_fav.setVisibility(View.VISIBLE);
+                                mRemoveFromFav.setVisibility(View.GONE);
+                            }else
+                            {
+                                Log.d(TAG, "onResponse: status är true"+response);
+                                mAdd_to_fav.setVisibility(View.GONE);
+                                mRemoveFromFav.setVisibility(View.VISIBLE);
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 }, new Response.ErrorListener() {
             @Override

@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         overridePendingTransition(0, 0);
 
     }
+
     private void parseJson(String url) {
         //final ProgressDialog dialog = ProgressDialog.show(this, null, "Filmer laddas....");
         shimmerLayout.startShimmerAnimation();
@@ -194,15 +195,15 @@ public class MainActivity extends AppCompatActivity {
                         movieList.remove(0);
                         popularMoiveAdapter.notifyDataSetChanged();
                         circleMoiveAdapter.notifyDataSetChanged();
-//                        new android.os.Handler().postDelayed(
-//                                new Runnable() {
-//                                    public void run() {
-//                                        dialog.dismiss();
-//                                    }
-//                                },
-//                                1000);
+                        new android.os.Handler().postDelayed(
+                                new Runnable() {
+                                    public void run() {
+
                         shimmerLayout.stopShimmerAnimation();
                         shimmerLayout.setVisibility(View.GONE);
+                                    }
+                                },
+                                1000);
                     }
 
 

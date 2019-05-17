@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+
+
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView"
+        android:layout_above="@+id/view_ab">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical">
+
+
+
+
+
+            
+
+            <FrameLayout
+                android:background="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <io.supercharge.shimmerlayout.ShimmerLayout
+                    android:id="@+id/shimmer_layout1s"
+                    app:shimmer_animation_duration="1200"
+                    app:layout_constraintTop_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <include layout="@layout/movie_item_placeholder"/>
+                        <include layout="@layout/movie_item_placeholder"/>
+                        <include layout="@layout/movie_item_placeholder"/>
+                        <include layout="@layout/movie_item_placeholder"/>
+                        <include layout="@layout/movie_item_placeholder"/>
+                        <include layout="@layout/movie_item_placeholder"/>
+                        <include layout="@layout/movie_item_placeholder"/>
+                    </LinearLayout>
+                </io.supercharge.shimmerlayout.ShimmerLayout>
+
+                <!-- A RecyclerView to display list -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_fav"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorPrimary"
+                    android:minHeight="840dp"
+                    android:paddingBottom="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent"
+                    android:scrollbars="vertical"/>
+            </FrameLayout>
+
+
+
+        </LinearLayout>
+    </ScrollView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:id="@+id/view_ab"
+        android:layout_above="@+id/bnve_fav"
+        android:background="@color/colorPrimaryDark"></View>
+    <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+        android:id="@+id/bnve_fav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
+        app:menu="@menu/bottomnavigationmenu" />
+
+</RelativeLayout>
