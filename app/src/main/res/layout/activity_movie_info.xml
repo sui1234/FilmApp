@@ -67,6 +67,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/header" />
 
+        <TextView
+            android:id="@+id/add_to_fav"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:ellipsize="end"
+            android:paddingTop="20px"
+            android:singleLine="true"
+            android:layout_marginTop="3dp"
+            android:textSize="12sp"
+            android:visibility="gone"
+            android:background="@mipmap/addfav"
+            android:textStyle="bold|italic"
+            app:layout_constraintStart_toEndOf="@+id/title"
+            app:layout_constraintTop_toTopOf="@+id/title" />
+        <TextView
+            android:id="@+id/remove_to_fav"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:ellipsize="end"
+            android:paddingTop="20px"
+            android:singleLine="true"
+            android:background="@mipmap/removefav"
+            android:textSize="12sp"
+            android:visibility="gone"
+            android:layout_marginTop="3dp"
+            android:textStyle="bold|italic"
+            app:layout_constraintStart_toEndOf="@+id/title"
+            app:layout_constraintTop_toTopOf="@+id/title" />
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
@@ -217,7 +247,6 @@
                 android:layout_centerInParent="true"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Rating"
                 android:textColor="#000"
                 android:textSize="12dp" />
         </RelativeLayout>

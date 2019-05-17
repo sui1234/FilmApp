@@ -3,8 +3,11 @@ package com.example.filmapp;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -31,32 +34,43 @@ public class SearchActivity extends AppCompatActivity {
     private Button searchButton;
     private SearchView searchView;
     private String searchString;
-    private RecyclerView recycleView;
+    private TextView firstTextView;
+    private RecyclerView recycleView,castRecyclerView;
     private ArrayList<MovieItem> movieList;
+    private ArrayList<MovieItem> mTvList;
+    private ArrayList<CreditPerson> mPersonList;
     ShimmerLayout shimmerLayout;
     RequestQueue requestQueue;
     PopularMoiveAdapter popularMoiveAdapter;
     SearchView close;
+    CastAdapter castAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
         recycleView = findViewById(R.id.recycler_view1);
+        castRecyclerView = findViewById(R.id.castRecyclerView_search);
         recycleView.setHasFixedSize(true);
         recycleView.setLayoutManager(new LinearLayoutManager(this));
+        castRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
 
         movieList = new ArrayList<>();
+        mTvList = new ArrayList<>();
+        mPersonList = new ArrayList<CreditPerson>();
         shimmerLayout = findViewById(R.id.shimmer_layout_copy);
         requestQueue = Volley.newRequestQueue(this);
 
 
         searchView = findViewById(R.id.searchView);
-        searchMovies();
+        searchView.setFocusable(true);
 
+        searchMovies();
+        firstTextView = (TextView)findViewById(R.id.tvStatus);
+        firstTextView.setVisibility(View.VISIBLE);
         searchButton = findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +85,10 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onClose() {
                movieList.clear();
+                mTvList.clear();
+                mPersonList.clear();
+                firstTextView.setVisibility(View.VISIBLE);
+
                 return false;
             }
         });
@@ -100,9 +118,14 @@ public class SearchActivity extends AppCompatActivity {
 
     private void getSearchMovies() {
 
-        String url = "https://api.themoviedb.org/3/search/movie?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=en-US&query=" + searchString + "&page=1";
+
+        String url = "https://api.themoviedb.org/3/search/multi?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=en-US&query=" + searchString + "&page=1&include_adult=false";
 
         Log.d("Sui url", "is " + url);
+        movieList.clear();
+        mTvList.clear();
+        mPersonList.clear();
+        firstTextView.setVisibility(View.VISIBLE);
 
         parseJson(url);
 
@@ -127,7 +150,11 @@ public class SearchActivity extends AppCompatActivity {
                             movieList.clear();
 
                             for (int i = 0; i < jsonArray.length(); i++) {
+                                firstTextView.setVisibility(View.GONE);
+
                                 JSONObject result = jsonArray.getJSONObject(i);
+                                if(result.getString("media_type").equals("movie")){
+
 
                                 String title = result.getString("original_title");
                                 String release = result.getString("release_date");
@@ -143,10 +170,29 @@ public class SearchActivity extends AppCompatActivity {
                                 movieList.add(new MovieItem(title, fullPosterUrl, release, description, id));
 
                                 Log.d("Sui","movieList" + movieList);
+                                }
+                                else if(result.getString("media_type").equals("person")){
+                                    String name = result.getString("name");
+                                    String id = result.getString("id");
+                                    String character = result.getString("popularity");
+                                    String profileImage = result.getString("profile_path");
 
-                            }
+                                    if (!profileImage.equals("null")) {
+                                        String fullProfileImageUrl = "http://image.tmdb.org/t/p/w185" + profileImage;
+                                        mPersonList.add(new CreditPerson(name, id, fullProfileImageUrl, character));
+                                    } else {
+                                        String dummyPic = "https://emgroupuk.com/wp-content/uploads/2018/06/profile-icon-9.png";
+                                        mPersonList.add(new CreditPerson(name, id, dummyPic, character));
+                                    }
+                                }
+
+
+                                }
 
                             popularMoiveAdapter = new PopularMoiveAdapter(SearchActivity.this, movieList);
+                            castAdapter = new CastAdapter(SearchActivity.this, mPersonList);
+
+                            castRecyclerView.setAdapter(castAdapter);
 
                             recycleView.setAdapter(popularMoiveAdapter);
 
@@ -155,7 +201,6 @@ public class SearchActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        movieList.remove(0);
 
                         shimmerLayout.stopShimmerAnimation();
                         shimmerLayout.setVisibility(View.GONE);

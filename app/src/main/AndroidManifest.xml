@@ -12,8 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".FavoritesActivity"></activity>
+        <activity android:name=".Favoriter.favoriter" />
         <activity android:name=".People.people_view" />
+        <activity android:name=".FavoritesActivity"></activity>
         <activity android:name=".MovieInfoActivity" />
         <activity android:name=".SearchActivity"/>
         <activity android:name=".MainActivity">
