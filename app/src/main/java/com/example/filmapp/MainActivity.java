@@ -1,13 +1,8 @@
 package com.example.filmapp;
 
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.graphics.Movie;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,11 +21,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-
 import com.example.filmapp.BottomNavMenu.BottomNavigationViewHelper;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -130,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
         parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language="+lokale+"&page=1");
         setuoBottomnavView();
         overridePendingTransition(0, 0);
@@ -188,13 +182,8 @@ public class MainActivity extends AppCompatActivity {
                                     movileList2.add(new MovieItem(title, fullPosterUrl, release, description,id));
 
                                 }
-
-
-
-
                             }
                             popularMoiveAdapter = new PopularMoiveAdapter(MainActivity.this, movieList);
-
                             recyclerView.setAdapter(popularMoiveAdapter);
                             circleMoiveAdapter = new CirclearMovieAdapter(MainActivity.this, movileList2);
                             mRecycleViewRound.setAdapter(circleMoiveAdapter);
@@ -272,4 +261,12 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationViewHelper.enableNavigation(MainActivity.this, bottomNavigationViewEx);
     }
 
+
+    /*
+    public void openMovieInfo(View v) {
+        Intent intent = new Intent(this, MovieInfoActivity.class);
+        startActivity(intent);
+        Log.d(TAG, "openMovieInfo: Function Called");
+    }
+    */
 }
