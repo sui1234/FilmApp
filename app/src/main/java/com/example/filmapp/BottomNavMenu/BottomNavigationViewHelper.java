@@ -2,12 +2,9 @@ package com.example.filmapp.BottomNavMenu;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.view.MenuItem;
 
 import com.example.filmapp.Favoriter.favoriter;
-import com.example.filmapp.FavoritesActivity;
-import com.example.filmapp.FavoritesActivity;
 import com.example.filmapp.MainActivity;
 import com.example.filmapp.R;
 import com.example.filmapp.SearchActivity;
@@ -15,9 +12,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import androidx.annotation.NonNull;
-
-import static android.content.Context.MODE_PRIVATE;
-import static com.example.filmapp.MovieInfoActivity.SHARED_PREFS;
 
 public class BottomNavigationViewHelper {
     private static final String TAG = "BottomNavigationViewHel";
@@ -42,7 +36,6 @@ public class BottomNavigationViewHelper {
                             break;
                     case R.id.nav_fav:
                         Intent intent3 = new Intent(context, favoriter.class);
-                        //Intent intent3 = new Intent(context, FavoritesActivity.class);
                         //Intent intent3 = new Intent(context, FavoritesActivity.class);
                         context.startActivity(intent3);
                         break;

@@ -646,22 +646,4 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         }
     }
 
-    public void saveToFavorites(View v) {
-        // OM filmen finns i listan så ta bort den ANNARS lägg till den
-        if (movieIDArrayList.contains(movieId)) {
-            movieIDArrayList.remove(movieId);
-            Log.d("!!!", "saveToFavorites: Removed " + movieId);
-        } else {
-            movieIDArrayList.add(movieId);
-            Log.d("!!!", "saveToFavorites: Added " + movieId);
-            saveFavoriteToPreferences();
-
-            Toast.makeText(this, "movie id is: " + movieId, Toast.LENGTH_SHORT).show();
-
-            for (int i = 0; i < movieIDArrayList.size(); i++) {
-                String id = movieIDArrayList.get(i);
-                Log.d("!!!", "saveToFavorites: " + id);
-            }
-        }
-    }
 }
