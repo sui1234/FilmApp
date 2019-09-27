@@ -16,12 +16,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.Glide;
 import com.example.filmapp.BottomNavMenu.BottomNavigationViewHelper;
-import com.example.filmapp.MainActivity;
-import com.example.filmapp.MovieInfoActivity;
 import com.example.filmapp.MovieItem;
-import com.example.filmapp.PopularMoiveAdapter;
+import com.example.filmapp.PopularMovieAdapter;
 import com.example.filmapp.R;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
@@ -36,7 +33,7 @@ public class favoriter extends AppCompatActivity {
     private static final String TAG = "favoriter";
     ShimmerLayout shimmerLayout;
     private ArrayList<MovieItem> movieList, movileList2;
-    private PopularMoiveAdapter popularMoiveAdapter;
+    private PopularMovieAdapter popularMovieAdapter;
     private RecyclerView recyclerView, mRecycleViewRound;
 
     @Override
@@ -85,8 +82,8 @@ public class favoriter extends AppCompatActivity {
 
                             }
                             Log.d(TAG, "onResponse: ++"+movieList);
-                            popularMoiveAdapter = new PopularMoiveAdapter(favoriter.this, movieList);
-                            recyclerView.setAdapter(popularMoiveAdapter);
+                            popularMovieAdapter = new PopularMovieAdapter(favoriter.this, movieList);
+                            recyclerView.setAdapter(popularMovieAdapter);
 
                             shimmerLayout.stopShimmerAnimation();
                             shimmerLayout.setVisibility(View.GONE);

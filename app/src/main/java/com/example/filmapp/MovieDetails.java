@@ -3,7 +3,7 @@ package com.example.filmapp;
 
 public class MovieDetails {
 
-   // public ImageView the_poster;
+    // public ImageView the_poster;
     public String the_poster;
     public String the_title;
     public String the_release_date;

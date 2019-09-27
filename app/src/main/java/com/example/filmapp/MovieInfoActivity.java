@@ -52,16 +52,16 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
     TextView movieTitleTv;
     TextView movieDescriptionTv;
     TextView movieReleaseDateTv;
-    TextView movieRuntimeTv,mAdd_to_fav,mRemoveFromFav;
+    TextView movieRuntimeTv, mAdd_to_fav, mRemoveFromFav;
     TextView movieRatingTv;
     TextView movieGenreTv, mRelatedMovie;
     RecyclerView castRecyclerView;
     RecyclerView crewRecyclerView;
-    RecyclerView relatedMovieRecyclerView,reviewsRecycle;
+    RecyclerView relatedMovieRecyclerView, reviewsRecycle;
     FrameLayout frameLayout;
     YouTubePlayerView youTubePlayerView;
     TabLayout mTabs;
-    String movieId,lokale;
+    String movieId, lokale;
     ScrollView scrollView;
 
     RequestQueue requestQueue;
@@ -117,8 +117,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         crewList = new ArrayList<>();
         reviewsList = new ArrayList<CreditPerson>();
         relatedMovieList = new ArrayList<>();
-        lokale = Locale.getDefault().getLanguage()+"-"+Locale.getDefault().getCountry();
-
+        lokale = Locale.getDefault().getLanguage() + "-" + Locale.getDefault().getCountry();
 
 
         castRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -145,7 +144,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         mRemoveFromFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "favo_movie: "+movieId);
+                Log.d(TAG, "favo_movie: " + movieId);
                 JSONObject user = new JSONObject();
                 try {
                     user.put("media_type", "movie");
@@ -155,7 +154,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
                 }
 
                 try {
-                    user.put("media_id",Integer.parseInt(movieId));
+                    user.put("media_id", Integer.parseInt(movieId));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -165,12 +164,12 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
                     e.printStackTrace();
                 }
 
-                Log.d(TAG, "Fav_create_session_id: "+ user);
+                Log.d(TAG, "Fav_create_session_id: " + user);
                 String url = "https://api.themoviedb.org/3/account/{account_id}/favorite?api_key=7005ceb3ddacaaf788e2327647f0fa57&session_id=0f864750f3c93c321b9972aa3fab11afdfed7226\n";
                 JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, user, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d(TAG, "onResponse: "+response);
+                        Log.d(TAG, "onResponse: " + response);
                         checkMovieStat();
 
                     }
@@ -178,7 +177,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //handle errors
-                        Log.d(TAG, "onResponse++: "+error);
+                        Log.d(TAG, "onResponse++: " + error);
 
                     }
 
@@ -190,7 +189,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         mAdd_to_fav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "favo_movie: "+movieId);
+                Log.d(TAG, "favo_movie: " + movieId);
                 JSONObject user = new JSONObject();
                 try {
                     user.put("media_type", "movie");
@@ -200,7 +199,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
                 }
 
                 try {
-                    user.put("media_id",Integer.parseInt(movieId));
+                    user.put("media_id", Integer.parseInt(movieId));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -210,12 +209,12 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
                     e.printStackTrace();
                 }
 
-                Log.d(TAG, "Fav_create_session_id: "+ user);
+                Log.d(TAG, "Fav_create_session_id: " + user);
                 String url = "https://api.themoviedb.org/3/account/{account_id}/favorite?api_key=7005ceb3ddacaaf788e2327647f0fa57&session_id=0f864750f3c93c321b9972aa3fab11afdfed7226\n";
                 JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, user, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d(TAG, "onResponse: "+response);
+                        Log.d(TAG, "onResponse: " + response);
                         // Some code
                         checkMovieStat();
 
@@ -225,7 +224,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //handle errors
-                        Log.d(TAG, "onResponse++: "+error);
+                        Log.d(TAG, "onResponse++: " + error);
 
                     }
 
@@ -238,7 +237,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int tabNum = mTabs.getSelectedTabPosition();
-                if (tabNum == 0){
+                if (tabNum == 0) {
                     movieDescriptionTv.setVisibility(View.VISIBLE);
                     mRelatedMovie.setVisibility(View.VISIBLE);
                     castRecyclerView.setVisibility(View.GONE);
@@ -250,7 +249,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
 
 
                 }
-                if (tabNum == 1){
+                if (tabNum == 1) {
                     movieDescriptionTv.setVisibility(View.GONE);
                     relatedMovieRecyclerView.setVisibility(View.GONE);
                     castRecyclerView.setVisibility(View.VISIBLE);
@@ -263,7 +262,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
                     castList.clear();
                     parseCastJson();
                 }
-                if (tabNum == 2){
+                if (tabNum == 2) {
                     movieDescriptionTv.setVisibility(View.GONE);
                     relatedMovieRecyclerView.setVisibility(View.GONE);
                     castRecyclerView.setVisibility(View.GONE);
@@ -275,7 +274,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
                     crewList.clear();
                     parseCrewJson();
                 }
-                if (tabNum == 3){
+                if (tabNum == 3) {
                     movieDescriptionTv.setVisibility(View.GONE);
                     relatedMovieRecyclerView.setVisibility(View.GONE);
                     castRecyclerView.setVisibility(View.GONE);
@@ -316,7 +315,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
     }
 
     private void parseMovieInfoJson() {
-        String url = "https://api.themoviedb.org/3/movie/" + movieId + "?api_key=7005ceb3ddacaaf788e2327647f0fa57&language="+lokale+"";
+        String url = "https://api.themoviedb.org/3/movie/" + movieId + "?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=" + lokale + "";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -368,21 +367,21 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         });
         requestQueue.add(request);
     }
+
     private void checkMovieStat() {
-        String url = "https://api.themoviedb.org/3/movie/"+movieId+"/account_states?api_key=7005ceb3ddacaaf788e2327647f0fa57&session_id=0f864750f3c93c321b9972aa3fab11afdfed7226";
+        String url = "https://api.themoviedb.org/3/movie/" + movieId + "/account_states?api_key=7005ceb3ddacaaf788e2327647f0fa57&session_id=0f864750f3c93c321b9972aa3fab11afdfed7226";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             Boolean dtatus = response.getBoolean("favorite");
-                            if(dtatus.equals(false)){
-                                Log.d(TAG, "onResponse: status är false"+response);
+                            if (dtatus.equals(false)) {
+                                Log.d(TAG, "onResponse: status är false" + response);
                                 mAdd_to_fav.setVisibility(View.VISIBLE);
                                 mRemoveFromFav.setVisibility(View.GONE);
-                            }else
-                            {
-                                Log.d(TAG, "onResponse: status är true"+response);
+                            } else {
+                                Log.d(TAG, "onResponse: status är true" + response);
                                 mAdd_to_fav.setVisibility(View.GONE);
                                 mRemoveFromFav.setVisibility(View.VISIBLE);
 
@@ -400,8 +399,9 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         });
         requestQueue.add(request);
     }
+
     private void parseMovieReview() {
-        String url = "https://api.themoviedb.org/3/movie/"+movieId+"/reviews?api_key=7005ceb3ddacaaf788e2327647f0fa57";
+        String url = "https://api.themoviedb.org/3/movie/" + movieId + "/reviews?api_key=7005ceb3ddacaaf788e2327647f0fa57";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -411,7 +411,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
                             JSONArray jsonArray = response.getJSONArray("results");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject result = jsonArray.getJSONObject(i);
-                                Log.d("antalet ", "onResponse: "+result.length());
+                                Log.d("antalet ", "onResponse: " + result.length());
                                 String name = result.getString("author");
                                 String contect = result.getString("content");
                                 String id = result.getString("id");
@@ -436,8 +436,9 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         });
         requestQueue.add(request);
     }
+
     private void parseCastJson() {
-        String url = "https://api.themoviedb.org/3/movie/" + movieId + "/credits?api_key=7005ceb3ddacaaf788e2327647f0fa57&language="+lokale+"";
+        String url = "https://api.themoviedb.org/3/movie/" + movieId + "/credits?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=" + lokale + "";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -482,7 +483,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
     }
 
     private void parseCrewJson() {
-        String url = "https://api.themoviedb.org/3/movie/" + movieId + "/credits?api_key=7005ceb3ddacaaf788e2327647f0fa57&language="+lokale+"";
+        String url = "https://api.themoviedb.org/3/movie/" + movieId + "/credits?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=" + lokale + "";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -525,7 +526,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
     }
 
     private void parseRelatedMovies() {
-        String url = "https://api.themoviedb.org/3/movie/" + movieId + "/similar?api_key=7005ceb3ddacaaf788e2327647f0fa57&language="+lokale+"&page=1";
+        String url = "https://api.themoviedb.org/3/movie/" + movieId + "/similar?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=" + lokale + "&page=1";
         // TODO: 2019-05-14 Remove log in Movieactivity
         Log.d("MovieUrl", url);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -567,7 +568,7 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
     }
 
     private void parseVideosJson() {
-        String url = "https://api.themoviedb.org/3/movie/" + movieId + "/videos?api_key=7005ceb3ddacaaf788e2327647f0fa57&language="+lokale+"";
+        String url = "https://api.themoviedb.org/3/movie/" + movieId + "/videos?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=" + lokale + "";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -616,13 +617,13 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         intent.putExtra(EXTRA_MESSAGE, id);
         startActivity(intent);
     }
-    private void setuoBottomnavView(){
+
+    private void setuoBottomnavView() {
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bnve);
         BottomNavigationViewHelper.setypBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(MovieInfoActivity.this, bottomNavigationViewEx);
 
     }
-
 
 
     public void saveFavoriteToPreferences() {
@@ -638,7 +639,8 @@ public class MovieInfoActivity extends AppCompatActivity implements RelatedMovie
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString(FAVORITE_ARRAY_LIST, null);
-        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+        Type type = new TypeToken<ArrayList<String>>() {
+        }.getType();
         movieIDArrayList = gson.fromJson(json, type);
 
         if (movieIDArrayList == null) {

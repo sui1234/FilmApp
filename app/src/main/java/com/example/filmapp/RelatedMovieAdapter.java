@@ -1,6 +1,7 @@
 package com.example.filmapp;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -73,9 +74,9 @@ public class RelatedMovieAdapter extends RecyclerView.Adapter<RelatedMovieAdapte
 
         @Override
         public void onClick(View view) {
-            Log.d(TAG, "onClick: sssss"+movieList.get(getAdapterPosition()).getId());
+            Log.d(TAG, "onClick: sssss" + movieList.get(getAdapterPosition()).getId());
             final MovieItem currentItem = movieList.get(getAdapterPosition());
-            Intent intent = new Intent (view.getContext(), MovieInfoActivity.class);
+            Intent intent = new Intent(view.getContext(), MovieInfoActivity.class);
             Bundle mBundle = new Bundle();
             mBundle.putString("movie_id", String.valueOf(currentItem.getId()));
             intent.putExtras(mBundle);

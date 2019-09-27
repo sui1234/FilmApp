@@ -34,21 +34,22 @@ import java.util.Locale;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import io.supercharge.shimmerlayout.ShimmerLayout;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private RecyclerView recyclerView, mRecycleViewRound;
-    private PopularMoiveAdapter popularMoiveAdapter;
+    private PopularMovieAdapter popularMovieAdapter;
     private RelativeLayout today_rel;
-    private CirclearMovieAdapter circleMoiveAdapter;
-    private ArrayList<MovieItem> movieList, movileList2;
-    private RequestQueue requestQueue,requestQueue2;
-    private TextView mTodaysMovieTitle, mTodaysMovieRate,mText,mTodayMovieId;
-    private ImageView mTodaysMovieImage;
+    private CircleMovieAdapter circleMovieAdapter;
+    private ArrayList<MovieItem> movieList, movieList2;
+    private RequestQueue requestQueue, requestQueue2;
+    private TextView mTodayMovieTitle, mTodayMovieRate, mText, mTodayMovieId;
+    private ImageView mTodayMovieImage;
 
-    private  JSONArray jsonGerenes;
-    private String gereners,lokale;
+    private JSONArray jsonGenres;
+    private String genres, locale;
 
     private Spinner mDropDown;
     ShimmerLayout shimmerLayout;
@@ -66,29 +67,29 @@ public class MainActivity extends AppCompatActivity {
         mDropDown = findViewById(R.id.spinner);
         mRecycleViewRound = findViewById(R.id.circleMovies);
         mRecycleViewRound.setHasFixedSize(true);
-        mRecycleViewRound.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false));
+        mRecycleViewRound.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         mTodayMovieId = findViewById(R.id.today_movie_id);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         movieList = new ArrayList<>();
-        movileList2 = new ArrayList<>();
+        movieList2 = new ArrayList<>();
         requestQueue = Volley.newRequestQueue(this);
         requestQueue2 = Volley.newRequestQueue(this);
         mText = findViewById(R.id.group_num);
 
         shimmerLayout = findViewById(R.id.shimmer_layout);
 
-        lokale = Locale.getDefault().getLanguage()+"-"+Locale.getDefault().getCountry();
-        today_rel = (RelativeLayout)findViewById(R.id.today_relative);
+        locale = Locale.getDefault().getLanguage() + "-" + Locale.getDefault().getCountry();
+        today_rel = (RelativeLayout) findViewById(R.id.today_relative);
 
-        ArrayAdapter<String> dropdownAdapter = new ArrayAdapter<String> (MainActivity.this,
-                R.layout.dropdown_item,getResources().getStringArray(R.array.dropdownArray));
+        ArrayAdapter<String> dropdownAdapter = new ArrayAdapter<String>(MainActivity.this,
+                R.layout.dropdown_item, getResources().getStringArray(R.array.dropdownArray));
         dropdownAdapter.setDropDownViewResource(R.layout.dropdown_item);
         today_rel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (v.getContext(), MovieInfoActivity.class);
+                Intent intent = new Intent(v.getContext(), MovieInfoActivity.class);
                 Bundle mBundle = new Bundle();
                 mBundle.putString("movie_id", String.valueOf(mTodayMovieId.getText()));
                 intent.putExtras(mBundle);
@@ -101,31 +102,29 @@ public class MainActivity extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                         ((TextView) view).setTextColor(Color.WHITE);
                         Object item = parent.getItemAtPosition(pos);
-                        Log.d(TAG, "onItemSelected: "+item.toString());
-                        if (item.toString().equals("På bio nu")){
+                        Log.d(TAG, "onItemSelected: " + item.toString());
+                        if (item.toString().equals("På bio nu")) {
 
-                            parseJson("https://api.themoviedb.org/3/movie/now_playing?api_key=7005ceb3ddacaaf788e2327647f0fa57&language="+lokale+"&page=1");
-
-                        }
-                        if (item.toString().equals("Top listan")){
-                            parseJson("https://api.themoviedb.org/3/movie/top_rated?api_key=7005ceb3ddacaaf788e2327647f0fa57&language="+lokale+"&page=1\n");
+                            parseJson("https://api.themoviedb.org/3/movie/now_playing?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=" + locale + "&page=1");
 
                         }
-                        if (item.toString().equals("Kommande filmer")){
-                            parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language="+lokale+"page=1");
+                        if (item.toString().equals("Top listan")) {
+                            parseJson("https://api.themoviedb.org/3/movie/top_rated?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=" + locale + "&page=1\n");
+
+                        }
+                        if (item.toString().equals("Kommande filmer")) {
+                            parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=" + locale + "page=1");
 
                         }
                     }
+
                     public void onNothingSelected(AdapterView<?> parent) {
                     }
                 });
 
 
-
-
-
-        parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language="+lokale+"&page=1");
-        setuoBottomnavView();
+        parseJson("https://api.themoviedb.org/3/movie/upcoming?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=" + locale + "&page=1");
+        setupBottomNavView();
         overridePendingTransition(0, 0);
 
     }
@@ -144,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
                             jsonArray = response.getJSONArray("results");
 
                             movieList.clear();
-                            movileList2.clear();
+                            movieList2.clear();
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject result = jsonArray.getJSONObject(i);
 
@@ -152,55 +151,54 @@ public class MainActivity extends AppCompatActivity {
                                 String release = result.getString("release_date");
                                 String description = result.getString("overview");
                                 String poster = result.getString("poster_path");
-                                String id     = result.getString("id");
+                                String id = result.getString("id");
 
                                 String fullPosterUrl = "http://image.tmdb.org/t/p/w500" + poster;
-                                if (i == 0){
+                                if (i == 0) {
 
-                                    mTodaysMovieTitle = findViewById(R.id.group_type);
-                                    mTodaysMovieImage =  findViewById(R.id.todayMoviewImage);
-                                    mTodaysMovieRate = findViewById(R.id.movieTodayRate);
+                                    mTodayMovieTitle = findViewById(R.id.group_type);
+                                    mTodayMovieImage = findViewById(R.id.todayMoviewImage);
+                                    mTodayMovieRate = findViewById(R.id.movieTodayRate);
 
-                                    mTodaysMovieRate.setText(result.getString("vote_average"));
-                                    JSONArray gernes_array = result.getJSONArray("genre_ids");
-                                    mTodaysMovieTitle.setText(result.getString("original_title"));
+                                    mTodayMovieRate.setText(result.getString("vote_average"));
+                                    JSONArray genres_array = result.getJSONArray("genre_ids");
+                                    mTodayMovieTitle.setText(result.getString("original_title"));
                                     mTodayMovieId.setText(result.getString("id"));
 
-                                        getGenerParse(gernes_array);
+                                    getGenerParse(genres_array);
 
-                                    Glide.with(getApplication()).load(fullPosterUrl).centerCrop().into(mTodaysMovieImage);
+                                    Glide.with(getApplication()).load(fullPosterUrl).centerCrop().into(mTodayMovieImage);
 
                                 }
                                 if (description.length() > 120) {
                                     description = description.substring(0, 120) + "...";
                                 }
 
-                                if (i < 10){
-                                    movieList.add(new MovieItem(title, fullPosterUrl, release, description,id));
+                                if (i < 10) {
+                                    movieList.add(new MovieItem(title, fullPosterUrl, release, description, id));
 
-                                }
-                                else {
-                                    movileList2.add(new MovieItem(title, fullPosterUrl, release, description,id));
+                                } else {
+                                    movieList2.add(new MovieItem(title, fullPosterUrl, release, description, id));
 
                                 }
                             }
-                            popularMoiveAdapter = new PopularMoiveAdapter(MainActivity.this, movieList);
-                            recyclerView.setAdapter(popularMoiveAdapter);
-                            circleMoiveAdapter = new CirclearMovieAdapter(MainActivity.this, movileList2);
-                            mRecycleViewRound.setAdapter(circleMoiveAdapter);
+                            popularMovieAdapter = new PopularMovieAdapter(MainActivity.this, movieList);
+                            recyclerView.setAdapter(popularMovieAdapter);
+                            circleMovieAdapter = new CircleMovieAdapter(MainActivity.this, movieList2);
+                            mRecycleViewRound.setAdapter(circleMovieAdapter);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         movieList.remove(0);
-                        popularMoiveAdapter.notifyDataSetChanged();
-                        circleMoiveAdapter.notifyDataSetChanged();
+                        popularMovieAdapter.notifyDataSetChanged();
+                        circleMovieAdapter.notifyDataSetChanged();
                         new android.os.Handler().postDelayed(
                                 new Runnable() {
                                     public void run() {
 
-                        shimmerLayout.stopShimmerAnimation();
-                        shimmerLayout.setVisibility(View.GONE);
+                                        shimmerLayout.stopShimmerAnimation();
+                                        shimmerLayout.setVisibility(View.GONE);
                                     }
                                 },
                                 1000);
@@ -208,24 +206,24 @@ public class MainActivity extends AppCompatActivity {
 
 
                     private void getGenerParse(final JSONArray gernes_array) {
-                        jsonGerenes = gernes_array;
-                        String url = "https://api.themoviedb.org/3/genre/movie/list?api_key=7005ceb3ddacaaf788e2327647f0fa57&language="+lokale+"";
+                        jsonGenres = gernes_array;
+                        String url = "https://api.themoviedb.org/3/genre/movie/list?api_key=7005ceb3ddacaaf788e2327647f0fa57&language=" + locale + "";
                         JsonObjectRequest req_grn = new JsonObjectRequest(Request.Method.GET, url, null,
                                 new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         try {
                                             JSONArray grn_array = response.getJSONArray("genres");
-                                            gereners = "";
-                                            for (int ig = 0; ig <= jsonGerenes.length();ig++){
-                                                int gre_id = (int) jsonGerenes.get(ig);
+                                            genres = "";
+                                            for (int ig = 0; ig <= jsonGenres.length(); ig++) {
+                                                int gre_id = (int) jsonGenres.get(ig);
 
-                                                for (int i = 0;i<grn_array.length();i++){
+                                                for (int i = 0; i < grn_array.length(); i++) {
                                                     JSONObject gener_name = grn_array.getJSONObject(i);
                                                     int id = gener_name.getInt("id");
                                                     String name = gener_name.getString("name");
-                                                    if (gre_id == id){
-                                                        gereners = name+" - "+ gereners;
+                                                    if (gre_id == id) {
+                                                        genres = name + " - " + genres;
                                                     }
                                                 }
                                             }
@@ -234,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
-                                        mText.setText(gereners);
+                                        mText.setText(genres);
 
                                     }
                                 }, new Response.ErrorListener() {
@@ -256,7 +254,8 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(request);
 
     }
-    private void setuoBottomnavView(){
+
+    private void setupBottomNavView() {
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bnve);
         BottomNavigationViewHelper.setypBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(MainActivity.this, bottomNavigationViewEx);

@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -27,6 +26,7 @@ import java.util.ArrayList;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import io.supercharge.shimmerlayout.ShimmerLayout;
 
 public class SearchActivity extends AppCompatActivity {
@@ -35,13 +35,13 @@ public class SearchActivity extends AppCompatActivity {
     private SearchView searchView;
     private String searchString;
     private TextView firstTextView;
-    private RecyclerView recycleView,castRecyclerView;
+    private RecyclerView recycleView, castRecyclerView;
     private ArrayList<MovieItem> movieList;
     private ArrayList<MovieItem> mTvList;
     private ArrayList<CreditPerson> mPersonList;
     ShimmerLayout shimmerLayout;
     RequestQueue requestQueue;
-    PopularMoiveAdapter popularMoiveAdapter;
+    PopularMovieAdapter popularMovieAdapter;
     SearchView close;
     CastAdapter castAdapter;
 
@@ -69,7 +69,7 @@ public class SearchActivity extends AppCompatActivity {
         searchView.setFocusable(true);
 
         searchMovies();
-        firstTextView = (TextView)findViewById(R.id.tvStatus);
+        firstTextView = (TextView) findViewById(R.id.tvStatus);
         firstTextView.setVisibility(View.VISIBLE);
         searchButton = findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -79,12 +79,12 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        close= findViewById(R.id.searchView);
+        close = findViewById(R.id.searchView);
 
         close.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-               movieList.clear();
+                movieList.clear();
                 mTvList.clear();
                 mPersonList.clear();
                 firstTextView.setVisibility(View.VISIBLE);
@@ -93,7 +93,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        setuoBottomnavView();
+        setupBottomNavView();
 
     }
 
@@ -133,14 +133,12 @@ public class SearchActivity extends AppCompatActivity {
 
 
     private void parseJson(String url) {
-        //final ProgressDialog dialog = ProgressDialog.show(this, null, "Filmer laddas....");
-        shimmerLayout.startShimmerAnimation();
 
+        shimmerLayout.startShimmerAnimation();
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
 
 
                         try {
@@ -153,25 +151,24 @@ public class SearchActivity extends AppCompatActivity {
                                 firstTextView.setVisibility(View.GONE);
 
                                 JSONObject result = jsonArray.getJSONObject(i);
-                                if(result.getString("media_type").equals("movie")){
+                                if (result.getString("media_type").equals("movie")) {
 
 
-                                String title = result.getString("original_title");
-                                String release = result.getString("release_date");
-                                String description = result.getString("overview");
-                                String poster = result.getString("poster_path");
-                                String id = result.getString("id");
+                                    String title = result.getString("original_title");
+                                    String release = result.getString("release_date");
+                                    String description = result.getString("overview");
+                                    String poster = result.getString("poster_path");
+                                    String id = result.getString("id");
 
-                                String fullPosterUrl = "http://image.tmdb.org/t/p/w500" + poster;
+                                    String fullPosterUrl = "http://image.tmdb.org/t/p/w500" + poster;
 
-                                if (description.length() > 120) {
-                                    description = description.substring(0, 120) + "...";
-                                }
-                                movieList.add(new MovieItem(title, fullPosterUrl, release, description, id));
+                                    if (description.length() > 120) {
+                                        description = description.substring(0, 120) + "...";
+                                    }
+                                    movieList.add(new MovieItem(title, fullPosterUrl, release, description, id));
 
-                                Log.d("Sui","movieList" + movieList);
-                                }
-                                else if(result.getString("media_type").equals("person")){
+                                    Log.d("Sui", "movieList" + movieList);
+                                } else if (result.getString("media_type").equals("person")) {
                                     String name = result.getString("name");
                                     String id = result.getString("id");
                                     String character = result.getString("popularity");
@@ -187,16 +184,16 @@ public class SearchActivity extends AppCompatActivity {
                                 }
 
 
-                                }
+                            }
 
-                            popularMoiveAdapter = new PopularMoiveAdapter(SearchActivity.this, movieList);
+                            popularMovieAdapter = new PopularMovieAdapter(SearchActivity.this, movieList);
                             castAdapter = new CastAdapter(SearchActivity.this, mPersonList);
 
                             castRecyclerView.setAdapter(castAdapter);
 
-                            recycleView.setAdapter(popularMoiveAdapter);
+                            recycleView.setAdapter(popularMovieAdapter);
 
-                            Log.d("Sui recycleView","is added");
+                            Log.d("Sui recycleView", "is added");
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -217,7 +214,7 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
-    private void setuoBottomnavView(){
+    private void setupBottomNavView() {
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bnve);
         BottomNavigationViewHelper.setypBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(SearchActivity.this, bottomNavigationViewEx);

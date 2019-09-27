@@ -55,12 +55,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         return myMovieDetails.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView the_poster;
         public TextView the_title;
         public TextView the_release_date;
         public TextView the_description;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 

@@ -1,8 +1,10 @@
 package com.example.filmapp;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.RequestQueue;
 
 import android.content.Intent;
@@ -24,6 +26,7 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.ViewHolder> {
     private Context context;
     private ArrayList<CreditPerson> creditList;
     private static final String TAG = "CastAdapter";
+
     public CastAdapter(Context context, ArrayList<CreditPerson> creditList) {
         this.context = context;
         this.creditList = creditList;
@@ -54,7 +57,7 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.ViewHolder> {
         return creditList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView profileImage;
         public TextView name;
@@ -73,7 +76,7 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.ViewHolder> {
         @Override
         public void onClick(View v) {
             final CreditPerson currentItem = creditList.get(getAdapterPosition());
-            Intent intent = new Intent (v.getContext(), people_view.class);
+            Intent intent = new Intent(v.getContext(), people_view.class);
             Bundle mBundle = new Bundle();
             mBundle.putString("people_id", currentItem.getId());
             intent.putExtras(mBundle);

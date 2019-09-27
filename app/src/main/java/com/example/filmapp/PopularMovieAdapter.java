@@ -1,6 +1,7 @@
 package com.example.filmapp;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,10 +17,11 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-public class PopularMoiveAdapter extends RecyclerView.Adapter<PopularMoiveAdapter.PopularMovieViewHolder> {
+public class PopularMovieAdapter extends RecyclerView.Adapter<PopularMovieAdapter.PopularMovieViewHolder> {
     private Context context;
     private ArrayList<MovieItem> movieList;
-    public PopularMoiveAdapter(Context context, ArrayList<MovieItem> movieList) {
+
+    public PopularMovieAdapter(Context context, ArrayList<MovieItem> movieList) {
         this.context = context;
         this.movieList = movieList;
     }
@@ -51,7 +53,7 @@ public class PopularMoiveAdapter extends RecyclerView.Adapter<PopularMoiveAdapte
         popularMovieViewHolder.moviePoster.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (v.getContext(), MovieInfoActivity.class);
+                Intent intent = new Intent(v.getContext(), MovieInfoActivity.class);
                 Bundle mBundle = new Bundle();
                 mBundle.putString("movie_id", currentItem.getId2());
                 intent.putExtras(mBundle);

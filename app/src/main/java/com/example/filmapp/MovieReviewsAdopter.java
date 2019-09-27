@@ -1,27 +1,29 @@
 package com.example.filmapp;
 
-        import android.content.Context;
-        import androidx.annotation.NonNull;
-        import androidx.recyclerview.widget.RecyclerView;
+import android.content.Context;
 
-        import android.content.Intent;
-        import android.os.Bundle;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.ImageView;
-        import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
-        import com.bumptech.glide.Glide;
-        import com.example.filmapp.People.people_view;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-        import java.util.ArrayList;
+import com.bumptech.glide.Glide;
+import com.example.filmapp.People.people_view;
+
+import java.util.ArrayList;
 
 public class MovieReviewsAdopter extends RecyclerView.Adapter<MovieReviewsAdopter.ViewHolder> {
 
     private Context context;
     private ArrayList<CreditPerson> reviewsList;
     private static final String TAG = "MovieReviewsAdopter";
+
     public MovieReviewsAdopter(Context context, ArrayList<CreditPerson> creditList) {
         this.context = context;
         this.reviewsList = creditList;
@@ -37,10 +39,10 @@ public class MovieReviewsAdopter extends RecyclerView.Adapter<MovieReviewsAdopte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        CreditPerson moviewReview = reviewsList.get(i);
+        CreditPerson movieReview = reviewsList.get(i);
 
-        viewHolder.message.setText(moviewReview.getProfileImageUrl());
-        viewHolder.name.setText(moviewReview.getName());
+        viewHolder.message.setText(movieReview.getProfileImageUrl());
+        viewHolder.name.setText(movieReview.getName());
         Glide.with(context)
                 .load("http://www.atabjkpg.se/wp-content/uploads/2017/12/default-user-image.png")
                 .into(viewHolder.profileImage);
@@ -52,7 +54,7 @@ public class MovieReviewsAdopter extends RecyclerView.Adapter<MovieReviewsAdopte
         return reviewsList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView profileImage;
         public TextView name;

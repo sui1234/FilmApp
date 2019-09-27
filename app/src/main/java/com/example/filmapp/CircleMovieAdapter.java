@@ -3,8 +3,10 @@ package com.example.filmapp;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,15 +19,16 @@ import com.jackandphantom.circularimageview.CircleImage;
 import java.util.ArrayList;
 
 
-public class CirclearMovieAdapter extends RecyclerView.Adapter<CirclearMovieAdapter.ViewHolder> {
+public class CircleMovieAdapter extends RecyclerView.Adapter<CircleMovieAdapter.ViewHolder> {
     private static final String TAG = "CirclearMovieAdapter";
     private Context context;
     private ArrayList<MovieItem> movieListCircle;
 
-    public CirclearMovieAdapter(Context context, ArrayList<MovieItem> movieList) {
+    public CircleMovieAdapter(Context context, ArrayList<MovieItem> movieList) {
         this.context = context;
         this.movieListCircle = movieList;
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -48,7 +51,7 @@ public class CirclearMovieAdapter extends RecyclerView.Adapter<CirclearMovieAdap
         viewHolder.mMovieImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (v.getContext(), MovieInfoActivity.class);
+                Intent intent = new Intent(v.getContext(), MovieInfoActivity.class);
                 Bundle mBundle = new Bundle();
                 mBundle.putString("movie_id", currentItem.getId2());
                 intent.putExtras(mBundle);
@@ -62,7 +65,7 @@ public class CirclearMovieAdapter extends RecyclerView.Adapter<CirclearMovieAdap
         return movieListCircle.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView mMovieName;
         CircleImage mMovieImage;
